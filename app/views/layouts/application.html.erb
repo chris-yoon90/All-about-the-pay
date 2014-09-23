@@ -8,7 +8,16 @@
 </head>
 <body>
 
-<%= yield %>
+	<%= render 'layouts/header' %>
+	<div class="container">
+		
+		<%= yield %>
+
+		<% if Rails.env.development? %>
+			<!--<%= debug("Original request: #{request.method} Overridden request: #{request.request_method} Original URL: #{request.original_url}") %> -->
+			<%= debug(params) %>
+		<% end %>
+	</div>
 
 </body>
 </html>
