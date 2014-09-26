@@ -11,4 +11,9 @@ class Employee < ActiveRecord::Base
 	validates :position, presence: true, 
 						length: { minimum: 2, maximum: 50 }
 
+	has_secure_password
+	validates :password, length: { minimum: 6 }
+
+	validates_confirmation_of :password
+
 end

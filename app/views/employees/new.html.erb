@@ -1,2 +1,24 @@
-<% provide(full_title('New Employee')) %>
-<h1>This is the page for creating new employees.</h1>
+<% provide(:title, full_title('New Employee')) %>
+<div class="row">
+	<div class="col-xs-6 col-xs-offset-3">
+		<h2>New Employee Information</h2>
+		<%= form_for(@employee) do |f|%>
+			<div class="form-group">
+				<%= f.label :name %>
+				<%= f.text_field :name, class: "form-control" %>
+			</div>
+
+			<div class="form-group">
+				<%= f.label :email %>
+				<%= f.text_field :email, class: "form-control" %>
+			</div>
+
+			<div class="form-group">
+				<%= f.label :position %>
+				<%= f.text_field :position, class: "form-control" %>
+			</div>
+
+			<%= f.submit "Sign 'em up!", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div>
