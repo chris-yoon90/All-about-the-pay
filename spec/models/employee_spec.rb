@@ -12,6 +12,7 @@ RSpec.describe Employee, :type => :model do
   it { should respond_to :password_digest }
   it { should respond_to :password }
   it { should respond_to :password_confirmation }
+  it { should respond_to :admin }
 
   describe "name validation" do
   	it "name cannot be blank" do
@@ -45,8 +46,14 @@ RSpec.describe Employee, :type => :model do
 			addresses.each do |valid_address|
 				employee.email = valid_address
 				expect(employee.valid?).to be_truthy
+      end
 		end
-  	end
+
+    it "email should be in lower case after save" do
+      employee.email = "eXaMPLE@EXamPlE.Com"
+      employee.save
+      expect(employee.reload.email).to eq "example@example.com"
+    end
 
   	it "email must be unique" do
   		employee.save
@@ -71,6 +78,56 @@ RSpec.describe Employee, :type => :model do
   		employee.position = "a" * 51
   		expect(employee.valid?).to be_falsey
   	end
+
+  end
+
+  describe "password" do
+    it "password must be minimum of 6 characters in length" do
+      password = "eM3^"
+      employee.password = password
+      employee.password_confirmation = password
+      expect(employee.valid?).to be_falsey
+    end
+
+    it "password must have at least 1 special character" do
+      password = "erML234"
+      employee.password = password
+      employee.password_confirmation = password
+      expect(employee.valid?).to be_falsey
+    end
+
+    it "password must have at least 1 digit" do
+      password = "erML&^s"
+      employee.password = password
+      employee.password_confirmation = password
+      expect(employee.valid?).to be_falsey
+    end
+
+    it "password must have at least 1 lowercase alphabet" do
+      password = "ERM57&^S"
+      employee.password = password
+      employee.password_confirmation = password
+      expect(employee.valid?).to be_falsey
+    end
+
+    it "password must have at least 1 uppercase alphabet" do
+      password = "erm57&^s"
+      employee.password = password
+      employee.password_confirmation = password
+      expect(employee.valid?).to be_falsey
+    end
+
+    it "password and password_confirmation must be the same" do
+      employee.password_confirmation = "jMe4&sk"
+      expect(employee.valid?).to be_falsey
+    end
+
+    it "password cannot be empty" do
+      password = " "
+      employee.password = password
+      employee.password_confirmation = password
+      expect(employee.valid?).to be_falsey
+    end
 
   end
 
