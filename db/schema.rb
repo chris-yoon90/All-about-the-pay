@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140928041151) do
+ActiveRecord::Schema.define(version: 20140929044926) do
 
   create_table "employees", force: true do |t|
     t.string   "name"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20140928041151) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "password_digest"
-    t.boolean  "admin",           default: false
+    t.string   "access_level",    default: "f"
   end
 
   add_index "employees", ["email"], name: "index_employees_on_email", unique: true

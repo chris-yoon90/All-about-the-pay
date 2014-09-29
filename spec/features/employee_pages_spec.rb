@@ -44,8 +44,4 @@ RSpec.feature "EmployeePages", :type => :feature do
 		
 	end
 
-	# feature "employee edit page" do
-		
-	# end
-
 end

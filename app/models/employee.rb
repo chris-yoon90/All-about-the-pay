@@ -26,4 +26,11 @@ class Employee < ActiveRecord::Base
 
 	validates_confirmation_of :password
 
+
+	# Access_level A: regular employee
+	# Access_level B: manager employee
+	# Access_level C: Site Admin
+	validates :access_level, presence: true,
+							inclusion: { in: %w(A B C) }
+
 end

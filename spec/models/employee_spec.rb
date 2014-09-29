@@ -12,7 +12,7 @@ RSpec.describe Employee, :type => :model do
   it { should respond_to :password_digest }
   it { should respond_to :password }
   it { should respond_to :password_confirmation }
-  it { should respond_to :admin }
+  it { should respond_to :access_level }
 
   describe "name validation" do
   	it "name cannot be blank" do
@@ -126,6 +126,14 @@ RSpec.describe Employee, :type => :model do
       password = " "
       employee.password = password
       employee.password_confirmation = password
+      expect(employee.valid?).to be_falsey
+    end
+
+  end
+
+  describe "access_level" do
+    it "access_level cannot be other than A, B or C" do
+      employee.access_level = "D"
       expect(employee.valid?).to be_falsey
     end
 

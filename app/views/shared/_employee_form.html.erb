@@ -1,24 +1,29 @@
 <div class="form-group">
 	<%= f.label :name, class: "control-label" %>
-	<%= f.text_field :name, class: "form-control", disabled: params[:action] == 'edit' ? true : false %>
+	<%= f.text_field :name, class: "form-control"%>
 </div>
 
 <div class="form-group">
 	<%= f.label :email, class: "control-label" %>
-	<%= f.text_field :email, class: "form-control", disabled: params[:action] == 'edit' ? true : false %>
+	<%= f.text_field :email, class: "form-control" %>
 </div>
 
 <div class="form-group">
 	<%= f.label :position, class: "control-label" %>
-	<%= f.text_field :position, class: "form-control", disabled: params[:action] == 'edit' ? true : false %>
+	<%= f.text_field :position, class: "form-control" %>
 </div>
 
-<div class="form-group" style="<%= params[:action] == 'edit' ? '' : 'display:none' %>">
+<div class="form-group">
+	<%= f.label :access_level, class: "control-label" %>
+	<%= f.select :access_level, options_for_select([['Employee', 'A'], ['Manager', 'B'], ['Site Admin', 'C']]), {}, { class: "form-control" } %>
+</div>
+
+<div class="form-group">
 	<%= f.label :password, class: "control-label" %>
 	<%= f.password_field :password, class: "form-control", value: password %>
 </div>
 
-<div class="form-group" style="<%= params[:action] == 'edit' ? '' : 'display:none' %>">
+<div class="form-group">
 	<%= f.label :password_confirmation, class: "control-label" %>
 	<%= f.password_field :password_confirmation, class: "form-control", value: password %>
 </div>
