@@ -25,7 +25,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 				feature "submitting a form with invalid information" do
 					before { click_button submit }
 					it { should have_title(full_title('New Employee')) }
-					it { should have_selector('div.alert.alert-danger') }
+					it { should have_error_message('There are 6 errors:') }
 				end
 			end
 
