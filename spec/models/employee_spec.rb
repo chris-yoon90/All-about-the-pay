@@ -137,6 +137,10 @@ RSpec.describe Employee, :type => :model do
       expect(employee.valid?).to be_falsey
     end
 
+    it "access_level defaults to A if not specified" do
+      expect(employee.access_level).to eq('A')
+    end
+
   end
 
 end

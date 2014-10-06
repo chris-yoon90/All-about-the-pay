@@ -21,9 +21,18 @@ RSpec.feature "SessionsPages", :type => :feature do
   				click_button "Log in"
   			end
   			
-  			it { should have_title(full_title(employee.name)) }
+  			it { should have_title(full_title(valid_employee.name)) }
   			it { should_not have_link "Log in" }
   			it { should have_link "Log out" }
+
+        feature "log out" do
+          before { click_link "Log out" }
+
+          it { should have_title(full_title("Log in")) }
+          it { should_not have_link "Log out" }
+          it { should have_link "Log in" }
+        end
+
   		end
 
   		feature "with invalid user" do

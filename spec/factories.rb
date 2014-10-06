@@ -5,7 +5,6 @@ FactoryGirl.define do
 		position "Tester"
 		password "eB^4kgL"
 		password_confirmation "eB^4kgL"
-		access_level "A"
 
 		factory :admin do
 			access_level "C"

@@ -4,7 +4,9 @@ class Employee < ActiveRecord::Base
 	validates :email, presence: true, 
 						uniqueness: { case_sensitive: false },
 						format: { with: VALID_EMAIL_REGEX }
-	before_save { email.downcase! }
+	before_save do 
+		email.downcase!
+	end
 
 	validates :name, presence: true, 
 						length: { minimum: 2, maximum: 50 }

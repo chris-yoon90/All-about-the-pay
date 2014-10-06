@@ -11,3 +11,10 @@ RSpec::Matchers.define :have_error_message do |message|
 		expect(page).to have_selector('div.alert.alert-danger', text: message)
 	end
 end
+
+def log_in(user)
+	visit login_path
+    fill_in "Email", with: user.email
+    fill_in "Password", with: user.password
+    click_button "Log in"
+end
