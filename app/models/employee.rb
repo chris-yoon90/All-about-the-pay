@@ -55,7 +55,7 @@ class Employee < ActiveRecord::Base
 		self.update_attribute(:remember_digest, nil)
 	end
 
-	def authenticated?(remember_token)
+	def remember_token_authenticated?(remember_token)
 		BCrypt::Password.new(self.remember_digest) == remember_token
 	end
 
