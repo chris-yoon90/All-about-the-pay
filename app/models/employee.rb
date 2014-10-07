@@ -1,11 +1,13 @@
 class Employee < ActiveRecord::Base
+	attr_accessor :remember_token
+
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
 
 	validates :email, presence: true, 
 						uniqueness: { case_sensitive: false },
 						format: { with: VALID_EMAIL_REGEX }
 	before_save do 
-		email.downcase!
+		self.email.downcase!
 	end
 
 	validates :name, presence: true, 
@@ -34,5 +36,27 @@ class Employee < ActiveRecord::Base
 	# Access_level C: Site Admin
 	validates :access_level, presence: true,
 							inclusion: { in: %w(A B C) }
+
+	def self.new_token
+		SecureRandom.urlsafe_base64
+	end
+
+	def self.digest(string)
+		cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+		BCrypt::Password.create(string, cost: cost)
+	end
+
+	def remember
+		self.remember_token = Employee.new_token
+		self.update_attribute(:remember_digest, Employee.digest(self.remember_token))
+	end
+
+	def forget
+		self.update_attribute(:remember_digest, nil)
+	end
+
+	def authenticated?(remember_token)
+		BCrypt::Password.new(self.remember_digest) == remember_token
+	end
 
 end
