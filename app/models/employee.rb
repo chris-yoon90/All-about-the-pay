@@ -24,7 +24,7 @@ class Employee < ActiveRecord::Base
 	#At least 1 uppercase letter
 	#At least 1 special character
 	#At least 1 digit
-	VALID_PASSWORD_REGEX = /\A.*(?=.*[a-z])(?=.*[A-Z])(?=.*[\W])(?=.*[\d]).*\z/
+	VALID_PASSWORD_REGEX = /\A.*(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).*\z/
 	validates :password, length: { minimum: 6 },
 						format: { with: VALID_PASSWORD_REGEX }
 

@@ -89,15 +89,8 @@ RSpec.describe Employee, :type => :model do
       expect(employee.valid?).to be_falsey
     end
 
-    it "password must have at least 1 special character" do
-      password = "erML234"
-      employee.password = password
-      employee.password_confirmation = password
-      expect(employee.valid?).to be_falsey
-    end
-
-    it "password must have at least 1 digit" do
-      password = "erML&^s"
+    it "password must have at least 1 special character or a digit" do
+      password = "erMLdfg"
       employee.password = password
       employee.password_confirmation = password
       expect(employee.valid?).to be_falsey
@@ -127,6 +120,15 @@ RSpec.describe Employee, :type => :model do
       employee.password = password
       employee.password_confirmation = password
       expect(employee.valid?).to be_falsey
+    end
+
+    it "valid passwords pass validation" do
+      passwords = %w[ssssD5 ssssD^ FFFFd2 FFFFd@ 5555Ds $$$$Ds]
+      passwords.each do |valid_password|
+        employee.password = valid_password
+        employee.password_confirmation = valid_password
+        expect(employee.valid?).to be_truthy
+      end
     end
 
   end
