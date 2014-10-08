@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   	user = Employee.find_by(email: params[:email].downcase)
   	if user && user.authenticate(params[:password])
   		log_in(user)
-  		remember(user)
+  		params[:remember_me] == '1' ? remember(user) : forget(user)
   		redirect_to user
   	else
   		flash.now[:danger] = "Invalid email or password."
