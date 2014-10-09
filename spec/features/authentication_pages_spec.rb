@@ -47,7 +47,7 @@ RSpec.feature "AuthenticationPages", :type => :feature do
 		end
 	end
 
-	feature "non-admin users visit new employee creation page" do
+	feature "non-admin users" do
 		feature "visit employee#new page" do
 			feature "for regular employees" do
 				let(:regular_employee) { FactoryGirl.create(:employee) }
@@ -84,6 +84,55 @@ RSpec.feature "AuthenticationPages", :type => :feature do
 
 				it_should_behave_like 'all user pages' do
 					let(:user) { regular_employee }
+				end
+			end
+		end
+
+		feature "visit user#show page" do
+			feature "for regular_employees" do
+				let(:employee1) { FactoryGirl.create(:employee) }
+				let(:employee2) { FactoryGirl.create(:employee) }
+
+				before { log_in employee1 }
+
+				feature "trying to visit other user's own user#show page" do
+					before { visit employee_path(employee2) }
+
+					it_should_behave_like 'all user pages' do
+						let(:user) { employee1 }
+					end
+
+				end
+			end
+		end
+
+		feature "visit user#edit page" do
+			feature "for regular_employees" do
+				let(:employee1) { FactoryGirl.create(:employee) }
+				let(:employee2) { FactoryGirl.create(:employee) }
+				before { log_in employee1 }
+
+				feature "trying to update other user information" do
+					before { visit edit_employee_path(employee2) }
+
+					it_should_behave_like 'all user pages' do
+						let(:user) { employee1 }
+					end
+				end
+
+			end
+
+			feature "for managers" do
+				let(:manager) { FactoryGirl.create(:manager) }
+				let(:employee) { FactoryGirl.create(:employee) }
+				before { log_in manager }
+
+				feature "trying to update other user information" do
+					before { visit edit_employee_path(employee) }
+
+					it_should_behave_like 'all user pages' do
+						let(:user) { manager }
+					end
 				end
 			end
 		end

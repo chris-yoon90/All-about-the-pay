@@ -37,6 +37,26 @@ RSpec.describe "AuthenticationRequests", :type => :request do
 			specify { expect(response).to redirect_to(employee_path(manager)) }
 		end
 
+		describe "regular employees cannot send PATCH request to update other user's info" do
+			let(:employee1) { FactoryGirl.create(:employee) }
+			let(:employee2) { FactoryGirl.create(:employee) }
+			before do
+				log_in(employee1, no_capybara: true)
+				patch employee_path(employee2)
+			end
+			specify { expect(response).to redirect_to(employee_path(employee1)) }
+		end
+
+		describe "managers cannot send PATCH request to update other user's info" do
+			let(:manager) { FactoryGirl.create(:manager) }
+			let(:employee) { FactoryGirl.create(:employee) }
+			before do
+				log_in(manager, no_capybara: true)
+				patch employee_path(employee)
+			end
+			specify { expect(response).to redirect_to(employee_path(manager)) }
+		end
+
 	end
 
 end

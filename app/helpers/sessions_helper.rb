@@ -42,7 +42,7 @@ module SessionsHelper
 		session[:return_to] = request.url if request.get?
 	end
 
-	def non_logged_in_user_redirect
+	def non_logged_in_user_must_log_in
       unless logged_in?
         store_location
         flash[:warning] = "Please sign in"

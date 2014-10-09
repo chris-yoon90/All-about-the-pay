@@ -1,7 +1,9 @@
 class EmployeesController < ApplicationController
-	before_action :non_logged_in_user_redirect
-	before_action :non_site_admin_users_redirect, only: [ :new, :create, :destroy ]
-	before_action :regular_employee_users_redirect, only: [ :index ]
+	before_action :non_logged_in_user_must_log_in
+	before_action :only_site_admin_has_access, only: [ :new, :create, :destroy ]
+	before_action :regular_employee_users_cannot_access, only: [ :index ]
+	before_action :regular_employee_users_only_have_access_to_their_own_page, only: [ :show, :edit, :update ]
+	before_action :managers_only_have_access_to_their_own_update_page, only: [ :edit, :update ]
 
 	def index
 		# @employees = Employee.paginate(page: params[:page])
@@ -52,13 +54,27 @@ class EmployeesController < ApplicationController
 			SecureRandom.urlsafe_base64
 		end
 
-		def non_site_admin_users_redirect
+		def only_site_admin_has_access
 			unless current_user.is_site_admin
 				redirect_to current_user
 			end
 		end
 
-		def regular_employee_users_redirect
+		def managers_only_have_access_to_their_own_update_page
+			if current_user.is_manager
+				@user = Employee.find(params[:id])
+				redirect_to current_user if current_user != @user
+			end
+		end
+
+		def regular_employee_users_only_have_access_to_their_own_page
+			if current_user.is_regular_employee
+				@user = Employee.find(params[:id])
+				redirect_to current_user if current_user != @user
+			end
+		end
+
+		def regular_employee_users_cannot_access
 			redirect_to current_user if current_user.is_regular_employee
 		end
 	
