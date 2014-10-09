@@ -1,10 +1,10 @@
-<% provide(:title, full_title('New Employee')) %>
+<% provide(:title, 'New Employee') %>
 <div class="row">
 	<div class="col-xs-6 col-xs-offset-3">
 		<h2>New Employee Information</h2>
 		<%= form_for(@employee) do |f|%>
 			<%= render 'shared/error_messages_template', model: @employee %>
-			<%= render 'shared/employee_form', f: f, password: @password %>
+			<%= render 'shared/employee_form', f: f %>
 		<% end %>
 	</div>
 </div>

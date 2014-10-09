@@ -38,4 +38,16 @@ module SessionsHelper
 		cookies.delete(:remember_token)
 	end
 
+	def store_location
+		session[:return_to] = request.url if request.get?
+	end
+
+	def non_logged_in_user_redirect
+      unless logged_in?
+        store_location
+        flash[:warning] = "Please sign in"
+        redirect_to login_path
+      end
+    end
+
 end

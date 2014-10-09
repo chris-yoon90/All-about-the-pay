@@ -18,14 +18,4 @@
 	<%= f.select :access_level, options_for_select([['Employee', 'A'], ['Manager', 'B'], ['Site Admin', 'C']]), {}, { class: "form-control" } %>
 </div>
 
-<div class="form-group">
-	<%= f.label :password, class: "control-label" %>
-	<%= f.password_field :password, class: "form-control", value: password %>
-</div>
-
-<div class="form-group">
-	<%= f.label :password_confirmation, class: "control-label" %>
-	<%= f.password_field :password_confirmation, class: "form-control", value: password %>
-</div>
-
 <%= f.submit "Sign 'em up!", class: "btn btn-primary" %>
