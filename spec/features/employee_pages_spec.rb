@@ -47,4 +47,60 @@ RSpec.feature "EmployeePages", :type => :feature do
 		end
 	end
 
+	feature "edit page" do
+		feature "For regular employees" do
+			let(:employee) { FactoryGirl.create(:employee) }
+			before do
+				log_in employee
+				visit edit_employee_path(employee)
+			end
+
+			it { should have_title(full_title("Edit #{employee.name}")) }
+			it { should have_content(employee.name) }
+			it { should have_content("Password") }
+			it { should have_content("Password confirmation")}
+			it { should_not have_content("Name") }
+			it { should_not have_content("Email") }
+			it { should_not have_content("Position") }
+			it { should_not have_content("Access level") }
+		end
+
+		feature "For site admin" do
+
+			let(:admin) { FactoryGirl.create(:admin) }
+			before { log_in admin }
+
+			feature "edit it's own user information" do
+				before { visit edit_employee_path(admin) }
+
+				it { should have_title(full_title("Edit #{admin.name}")) }
+				it { should have_content(admin.name) }
+				it { should have_content("Password") }
+				it { should have_content("Password confirmation")}
+				it { should have_content("Name") }
+				it { should have_content("Email") }
+				it { should have_content("Position") }
+				it { should have_content("Access level") }
+
+			end
+
+			feature "edit other user information" do
+				let(:employee) { FactoryGirl.create(:employee) }
+				before do
+					visit edit_employee_path(employee)
+				end
+
+				it { should have_title(full_title("Edit #{employee.name}")) }
+				it { should have_content(employee.name) }
+				it { should_not have_content("Password") }
+				it { should_not have_content("Password confirmation")}
+				it { should have_content("Name") }
+				it { should have_content("Email") }
+				it { should have_content("Position") }
+				it { should have_content("Access level") }
+
+			end
+		end
+	end
+
 end

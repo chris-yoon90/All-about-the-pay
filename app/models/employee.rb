@@ -59,15 +59,15 @@ class Employee < ActiveRecord::Base
 		BCrypt::Password.new(self.remember_digest) == remember_token
 	end
 
-	def is_site_admin
+	def is_site_admin?
 		self.access_level == 'C'
 	end
 
-	def is_manager
+	def is_manager?
 		self.access_level == 'B'
 	end
 
-	def is_regular_employee
+	def is_regular_employee?
 		self.access_level == 'A'
 	end
 

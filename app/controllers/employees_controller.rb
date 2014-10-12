@@ -27,7 +27,7 @@ class EmployeesController < ApplicationController
 	end
 
 	def edit
-		# @employee = Employee.find(params[:id])
+		
 	end
 
 	def update
@@ -55,27 +55,26 @@ class EmployeesController < ApplicationController
 		end
 
 		def only_site_admin_has_access
-			unless current_user.is_site_admin
+			unless current_user.is_site_admin?
 				redirect_to current_user
 			end
 		end
 
 		def managers_only_have_access_to_their_own_update_page
-			if current_user.is_manager
-				@user = Employee.find(params[:id])
+			if current_user.is_manager?
 				redirect_to current_user if current_user != @user
 			end
 		end
 
 		def regular_employee_users_only_have_access_to_their_own_page
-			if current_user.is_regular_employee
-				@user = Employee.find(params[:id])
+			@user = Employee.find(params[:id])
+			if current_user.is_regular_employee?
 				redirect_to current_user if current_user != @user
 			end
 		end
 
 		def regular_employee_users_cannot_access
-			redirect_to current_user if current_user.is_regular_employee
+			redirect_to current_user if current_user.is_regular_employee?
 		end
 	
 end
