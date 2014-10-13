@@ -1,12 +1,12 @@
-<% provide(:title, "Edit #{@user.name}") %>
+<% provide(:title, "Edit #{@employee.name}") %>
 <div class="row">
 	<div class="col-xs-6 col-xs-offset-3">
-		<h2>Information of <%= @user.name %></h2>
-		<%= form_for(@user) do |f|%>
-			<%= render 'shared/error_messages_template', model: @user %>
+		<h2>Information of <%= @employee.name %></h2>
+		<%= form_for(@employee) do |f|%>
+			<%= render 'shared/error_messages_template', model: @employee %>
 			<% if current_user.is_site_admin? %>
 				<%= render 'shared/employee_form_without_password', f: f %>
-				<% if @user == current_user %>
+				<% if @employee == current_user %>
 					<%= render 'shared/employee_form_password', f: f %>
 				<% end %>
 			<% else %>

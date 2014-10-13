@@ -29,7 +29,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 				feature "submitting a form with invalid information" do
 					before { click_button submit }
 					it { should have_title(full_title('New Employee')) }
-					it { should have_error_message('There are 6 errors:') }
+					it { should have_error_message("error") }
 				end
 			end
 
@@ -48,7 +48,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 	end
 
 	feature "edit page" do
-		feature "For regular employees" do
+		feature "for regular employees" do
 			let(:employee) { FactoryGirl.create(:employee) }
 			before do
 				log_in employee
@@ -63,6 +63,34 @@ RSpec.feature "EmployeePages", :type => :feature do
 			it { should_not have_content("Email") }
 			it { should_not have_content("Position") }
 			it { should_not have_content("Access level") }
+
+			feature "try to update information" do
+				feature "with invalid information" do
+					before do
+						click_button "Update"
+					end
+
+					specify { expect(employee.reload.authenticate(employee.password)).not_to be_falsey }
+					it { should have_title(full_title("Edit #{employee.name}")) }
+					it { should have_error_message("error") }
+				end
+
+				feature "with valid information" do
+					let(:new_password) { "eR34Fff" }
+					before do
+						fill_in "Password", with: new_password
+						fill_in "Password confirmation", with: new_password
+						click_button "Update"
+					end
+
+					specify { expect(employee.reload.authenticate(new_password)).to be_truthy }
+					it { should have_selector('div.alert.alert-success', text: "success")}
+					it { should have_title(full_title(employee.name)) }
+
+				end
+
+			end
+
 		end
 
 		feature "For site admin" do
@@ -82,6 +110,32 @@ RSpec.feature "EmployeePages", :type => :feature do
 				it { should have_content("Position") }
 				it { should have_content("Access level") }
 
+				feature "try to update information" do
+					feature "with invalid information" do
+						before { click_button "Update" }
+						specify { expect(admin.reload.authenticate(admin.password)).to be_truthy }
+						it { should have_title(full_title("Edit #{admin.name}")) }
+						it { should have_error_message("error") }
+					end
+
+					feature "with valid information" do
+						let(:new_name) { "Updating Test Admin" }
+						before do 
+							fill_in "Name", with: new_name
+							fill_in "Password", with: admin.password
+							fill_in "Password confirmation", with: admin.password_confirmation
+							click_button "Update"
+						end
+
+						it { expect(admin.reload.name).to eq new_name }
+						it { should_not have_error_message("error") }
+						it { should have_selector('div.alert.alert-success', text: "success")}
+						it { should have_title(full_title(new_name)) }
+
+					end
+
+				end
+
 			end
 
 			feature "edit other user information" do
@@ -98,6 +152,30 @@ RSpec.feature "EmployeePages", :type => :feature do
 				it { should have_content("Email") }
 				it { should have_content("Position") }
 				it { should have_content("Access level") }
+
+				feature "try to update information" do
+					feature "clicking update without changing any field" do
+						before { click_button "Update" }
+						specify { expect(employee.reload.authenticate(employee.password)).to be_falsey }
+						it { should_not have_error_message("error") }
+						it { should have_selector('div.alert.alert-success', text: "success")}
+						it { should have_title(full_title(employee.name)) }
+					end
+
+					feature "clicking update after changing any field" do
+						let(:new_name) { "This Employee got promoted" }
+						before do
+							fill_in "Name", with: new_name
+							click_button "Update"
+						end
+
+						it { expect(employee.reload.name).to eq new_name }
+						it { should_not have_error_message("error") }
+						it { should have_selector('div.alert.alert-success', text: "success")}
+						it { should have_title(full_title(new_name)) }
+					end
+
+				end
 
 			end
 		end

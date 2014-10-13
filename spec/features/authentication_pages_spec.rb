@@ -86,6 +86,19 @@ RSpec.feature "AuthenticationPages", :type => :feature do
 					let(:user) { regular_employee }
 				end
 			end
+
+			feature "for managers" do
+				let(:manager) { FactoryGirl.create(:manager) }
+				before do
+					log_in manager
+					visit employees_path
+				end
+
+				it_should_behave_like 'all user pages' do
+					let(:user) { manager }
+				end
+			end
+
 		end
 
 		feature "visit user#show page" do

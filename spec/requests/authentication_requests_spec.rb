@@ -57,6 +57,16 @@ RSpec.describe "AuthenticationRequests", :type => :request do
 			specify { expect(response).to redirect_to(employee_path(manager)) }
 		end
 
+		describe "non site admin can only update passwords with UPDATE" do
+			let(:employee) { FactoryGirl.create(:employee) }
+			before do
+				log_in employee, no_capybara: true
+				patch employee_path(employee), employee: { name: "Fail", password: employee.password, password_confirmation: employee.password }
+			end
+
+			specify { expect(employee.reload.name).to_not eq "Fail" }
+		end
+
 	end
 
 end
