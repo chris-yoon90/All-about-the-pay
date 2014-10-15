@@ -1,6 +1,9 @@
 class Employee < ActiveRecord::Base
 	attr_accessor :remember_token
 
+	has_many :group_memberships
+	has_many :groups, through: :group_memberships
+
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
 
 	validates :email, presence: true, 
