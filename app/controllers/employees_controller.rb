@@ -1,6 +1,6 @@
 class EmployeesController < ApplicationController
 	before_action :non_logged_in_user_must_log_in
-	before_action :only_site_admin_has_access, only: [:index, :new, :create, :destroy ]
+	before_action :only_site_admin_has_access, only: [ :new, :create, :destroy ]
 	before_action :only_site_admin_has_access_to_other_users_page, only: [ :edit, :update ]
 	before_action :regular_employee_users_only_have_access_to_their_own_page, only: [ :show ]
 

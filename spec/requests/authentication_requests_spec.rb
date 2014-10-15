@@ -1,70 +1,157 @@
 require 'rails_helper'
 
 RSpec.describe "AuthenticationRequests", :type => :request do
-	describe "non-logged in users" do
-		describe "cannot send POST request to employee#create" do
+	describe "As a non-logged in user" do
+		describe "Send a POST request to Employee#create" do
 			before { post employees_path }
 			specify { expect(response).to redirect_to(login_path) }
 		end
 
-		describe "cannot send PUT/PATCH request to employee#update" do
+		describe "Send PUT/PATCH request to Employee#update" do
 			before { patch employee_path(1) }
 			specify { expect(response).to redirect_to(login_path) }
 		end
 
-		describe "cannot send DELETE request to employee#destroy" do
+		describe "Send DELETE request to Employee#destroy" do
 			before { delete employee_path(1) }
 			specify { expect(response).to redirect_to(login_path) }
 		end
+
+		describe "Send GET request to Employee#index" do
+			before { get employees_path }
+			specify { expect(response).to redirect_to(login_path) }
+		end
+
+		describe "Send GET request to Employee#show" do
+			before { get employee_path(1) }
+			specify { expect(response).to redirect_to(login_path) }
+		end
+
+		describe "Send GET request to Employee#new" do
+			before { get new_employee_path }
+			specify { expect(response).to redirect_to(login_path) }
+		end
+
+		describe "Send GET request to Employee#edit" do
+			before { get edit_employee_path(1) }
+			specify { expect(response).to redirect_to(login_path) }
+		end
+
 	end
 
-	describe "non-admin users" do
-		describe "regular employees cannot send POST request to employee#create" do
-			let(:regular_employee) { FactoryGirl.create(:employee) }
-			before do 
-				log_in(regular_employee, no_capybara: true)
-				post employees_path
-			end
-			specify { expect(response).to redirect_to(employee_path(regular_employee)) }
-		end
+	describe "As a non-admin user" do
 
-		describe "managers cannot send DELETE request to employee#destroy" do
+		describe "As a manager (access level B)" do
 			let(:manager) { FactoryGirl.create(:manager) }
-			before do
-				log_in(manager, no_capybara: true)
-				delete employee_path(1)
+			before { log_in manager, no_capybara: true }
+
+			describe "Send GET request to other user's Employee#edit" do
+				let(:manager2) { FactoryGirl.create(:manager) }
+				before { get edit_employee_path(manager2) }
+				specify { expect(response).to redirect_to(employee_path(manager)) }
 			end
-			specify { expect(response).to redirect_to(employee_path(manager)) }
+
+			describe "Send GET request to Employee#new" do
+				before { get new_employee_path }
+				specify { expect(response).to redirect_to(employee_path(manager)) }
+			end
+
+			describe "Send DELETE request to Employee#destroy" do
+				before { delete employee_path(1) }
+				specify { expect(response).to redirect_to(employee_path(manager)) }
+			end
+
+			describe "Send POST request to Employee#create" do
+				before { post employees_path }
+				specify { expect(response).to redirect_to(employee_path(manager)) }
+			end
+
+			describe "Send PATCH request to other user's Employee#update" do
+				let(:employee) { FactoryGirl.create(:employee) }
+				before { patch employee_path(employee) }
+				specify { expect(response).to redirect_to(employee_path(manager)) }
+			end
+
+			describe "Send PATCH request to Employee#update to update information other than password" do
+				let(:employee) { FactoryGirl.create(:employee) }
+				let(:new_name) { "Name does not update" }
+				let(:new_email) { "doesnotupdate@doesnotupdate.com" }
+				let(:new_position) { "Position Does not update" }
+				before do
+					patch employee_path(employee), 
+							employee: { 
+								name: new_name, 
+								email: new_email,
+								position: new_position,
+								password: employee.password, 
+								password_confirmation: employee.password 
+							}
+				end
+
+				specify { expect(employee.reload.name).to_not eq new_name }
+				specify { expect(employee.reload.email).to_not eq new_email }
+				specify { expect(employee.reload.position).to_not eq new_position }
+			end
+
 		end
 
-		describe "regular employees cannot send PATCH request to update other user's info" do
-			let(:employee1) { FactoryGirl.create(:employee) }
-			let(:employee2) { FactoryGirl.create(:employee) }
-			before do
-				log_in(employee1, no_capybara: true)
-				patch employee_path(employee2)
-			end
-			specify { expect(response).to redirect_to(employee_path(employee1)) }
-		end
-
-		describe "managers cannot send PATCH request to update other user's info" do
-			let(:manager) { FactoryGirl.create(:manager) }
+		describe "As a employee (access level A)" do
 			let(:employee) { FactoryGirl.create(:employee) }
-			before do
-				log_in(manager, no_capybara: true)
-				patch employee_path(employee)
-			end
-			specify { expect(response).to redirect_to(employee_path(manager)) }
-		end
+			before { log_in(employee, no_capybara: true) }
 
-		describe "non site admin can only update passwords with UPDATE" do
-			let(:employee) { FactoryGirl.create(:employee) }
-			before do
-				log_in employee, no_capybara: true
-				patch employee_path(employee), employee: { name: "Fail", password: employee.password, password_confirmation: employee.password }
+			describe "Send GET request to other user's Employee#edit" do
+				let(:employee2) { FactoryGirl.create(:employee) }
+				before { get edit_employee_path(employee2) }
+				specify { expect(response).to redirect_to(employee_path(employee)) }
 			end
 
-			specify { expect(employee.reload.name).to_not eq "Fail" }
+			describe "Send GET request to other user's Employee#show" do
+				let(:employee2) { FactoryGirl.create(:employee) }
+				before { get employee_path(employee2) }
+				specify { expect(response).to redirect_to(employee_path(employee)) }
+			end
+
+			describe "Send GET request to Employee#new" do
+				before { get new_employee_path }
+				specify { expect(response).to redirect_to(employee_path(employee)) }
+			end
+
+			describe "Send DELETE request to employee#destroy" do
+				before { delete employee_path(1) }
+				specify { expect(response).to redirect_to(employee_path(employee)) }
+			end
+
+			describe "Send POST request to employee#create" do
+				before { post employees_path }
+				specify { expect(response).to redirect_to(employee_path(employee)) }
+			end
+
+			describe "Send PATCH request to update other user's info" do
+				let(:employee2) { FactoryGirl.create(:employee) }
+				before { patch employee_path(employee2) }
+				specify { expect(response).to redirect_to(employee_path(employee)) }
+			end
+
+			describe "Send PATCH request to update information other than password" do
+				let(:new_name) { "Name does not update" }
+				let(:new_email) { "doesnotupdate@doesnotupdate.com" }
+				let(:new_position) { "Position Does not update" }
+				before do
+					patch employee_path(employee), 
+							employee: { 
+								name: new_name, 
+								email: new_email,
+								position: new_position,
+								password: employee.password, 
+								password_confirmation: employee.password 
+							}
+				end
+
+				specify { expect(employee.reload.name).to_not eq new_name }
+				specify { expect(employee.reload.email).to_not eq new_email }
+				specify { expect(employee.reload.position).to_not eq new_position }
+			end
+
 		end
 
 	end
