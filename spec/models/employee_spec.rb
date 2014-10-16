@@ -162,6 +162,24 @@ RSpec.describe Employee, :type => :model do
       specify { expect(employee.member?(group)).to be_falsey }
 
     end
+  end
+
+  describe "When accepted as the owner" do
+    let(:group) { FactoryGirl.create(:group) }
+    before do
+      employee.save
+      group.accept_owner!(employee)
+    end
+
+    its(:owned_groups) { should include group }
+    specify { expect(employee.owner?(group)).to be_truthy }
+
+    describe "Then rejected as the owner" do
+      before { group.reject_owner! }
+
+      its(:owned_groups) { should_not include group }
+      specify { expect(employee.owner?(group)).to be_falsey }
+    end
 
   end
 
@@ -185,7 +203,28 @@ RSpec.describe Employee, :type => :model do
       end
 
     end
+  end
 
+  describe "Group Ownership association" do
+    let(:group1) { FactoryGirl.create(:group) }
+    let(:group2) { FactoryGirl.create(:group) }
+    before do 
+      employee.save
+      group1.accept_owner!(employee)
+      group2.accept_owner!(employee)
+    end
+
+    describe "When Employee is deleted" do
+      let!(:group_ownerships) { employee.group_ownerships.to_a }
+      before { employee.destroy }
+
+      it "Associated group_ownerships are also destroyed" do
+        group_ownerships.each do |group_ownership|
+          expect(GroupMembership.find_by(group_id: group_ownership.group_id, employee_id: group_ownership.employee_id)).to be_nil
+        end
+      end
+
+    end
   end
 
 end

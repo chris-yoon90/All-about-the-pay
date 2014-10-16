@@ -3,6 +3,8 @@ class Employee < ActiveRecord::Base
 
 	has_many :group_memberships, dependent: :destroy
 	has_many :groups, through: :group_memberships
+	has_many :group_ownerships, dependent: :destroy
+	has_many :owned_groups, through: :group_ownerships, source: :group
 
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
 
@@ -76,6 +78,10 @@ class Employee < ActiveRecord::Base
 
 	def member?(group)
 		self.group_memberships.find_by(group_id: group.id)
+	end
+
+	def owner?(group)
+		self.group_ownerships.find_by(group_id: group.id)
 	end
 
 end
