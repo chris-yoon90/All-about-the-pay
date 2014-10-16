@@ -1,7 +1,7 @@
 class Employee < ActiveRecord::Base
 	attr_accessor :remember_token
 
-	has_many :group_memberships
+	has_many :group_memberships, dependent: :destroy
 	has_many :groups, through: :group_memberships
 
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
@@ -72,6 +72,10 @@ class Employee < ActiveRecord::Base
 
 	def is_regular_employee?
 		self.access_level == 'A'
+	end
+
+	def member?(group)
+		self.group_memberships.find_by(group_id: group.id)
 	end
 
 end

@@ -6,6 +6,7 @@ gem 'rails', '4.1.6'
 group :development, :test do
 	gem 'sqlite3'
 	gem 'rspec-rails'
+	gem 'rspec-its'
 	gem 'pry-rails'
 end
 

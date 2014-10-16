@@ -16,5 +16,9 @@ FactoryGirl.define do
 
 	end
 
+	factory :group do
+		sequence(:name) { |n| "Test Group #{n}" }
+	end
+
 
 end

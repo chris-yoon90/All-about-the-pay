@@ -145,4 +145,47 @@ RSpec.describe Employee, :type => :model do
 
   end
 
+  describe "When accepted as a member" do
+    let(:group) { FactoryGirl.create(:group) }
+    before do 
+      employee.save
+      group.accept_member!(employee)
+    end
+    
+    its(:groups) { should include group }
+    specify { expect(employee.member?(group)).to be_truthy }
+
+    describe "Then rejected from the group1" do
+      before { group.reject_member!(employee) }
+
+      its(:groups) { should_not include group }
+      specify { expect(employee.member?(group)).to be_falsey }
+
+    end
+
+  end
+
+  describe "Group Membership association" do
+    let(:group1) { FactoryGirl.create(:group) }
+    let(:group2) { FactoryGirl.create(:group) }
+    before do 
+      employee.save
+      group1.accept_member!(employee)
+      group2.accept_member!(employee)
+    end
+
+    describe "When Employee is deleted" do
+      let!(:group_memberships) { employee.group_memberships.to_a }
+      before { employee.destroy }
+
+      it "Associated group_memberships are also destroyed" do
+        group_memberships.each do |group_membership|
+          expect(GroupMembership.find_by(group_id: group_membership.group_id, employee_id: group_membership.employee_id)).to be_nil
+        end
+      end
+
+    end
+
+  end
+
 end

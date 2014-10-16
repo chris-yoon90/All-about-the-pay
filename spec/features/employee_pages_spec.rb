@@ -40,8 +40,10 @@ RSpec.feature "EmployeePages", :type => :feature do
 					fill_in "Position", with: employee.position
 				end
 
-				specify { expect { click_button submit }.to change(Employee, :count).by(1) }
-
+				it "Should create a new user" do
+					expect { click_button submit }.to change(Employee, :count).by(1)
+				end
+				
 			end
 		end
 	end
