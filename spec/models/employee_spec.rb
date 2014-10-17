@@ -14,6 +14,15 @@ RSpec.describe Employee, :type => :model do
   it { should respond_to :password_confirmation }
   it { should respond_to :isAdmin }
 
+  describe "isAdmin attribute" do
+    before do 
+      employee.save
+      employee.toggle!(:isAdmin)
+    end
+
+    it { expect(employee.isAdmin?).to be_truthy }
+  end
+
   describe "name validation" do
   	it "name cannot be blank" do
   		employee.name = " ";

@@ -22,3 +22,33 @@ Employee.create(name: "Admin",
 					password: "T3st0rder!", 
 					password_confirmation: "T3st0rder!")
 end
+
+5.times do |i|
+	Group.create(name: Faker::Company.name)
+end
+
+employees = Employee.all
+manager1 = Employee.find(2)
+manager2 = Employee.find(3)
+group1 = Group.first
+group2 = Group.find(2)
+group3 = Group.find(3)
+group1.accept_owner!(manager1)
+group2.accept_owner!(manager1)
+group3.accept_owner!(manager2)
+
+group1_members = employees[4..10]
+group2_members = employees[8..15]
+group3_members = employees[14..30]
+
+group1_members.each do |member|
+	group1.accept_member!(member)
+end
+
+group2_members.each do |member|
+	group2.accept_member!(member)
+end
+
+group3_members.each do |member|
+	group3.accept_member!(member)
+end

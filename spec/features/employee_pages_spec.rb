@@ -3,6 +3,46 @@ require 'rails_helper'
 RSpec.feature "EmployeePages", :type => :feature do
 	subject { page }
 
+	# feature "Visit Employee#index page" do
+	# 	before { 20.times { FactoryGirl.create(:employee) } }
+
+	# 	feature "As an admin user" do
+	# 		let(:admin) { FactoryGirl.create(:admin) }
+	# 		before do
+	# 			log_in admin
+	# 			visit employees_path
+	# 		end
+
+	# 		it { should have_content "Employee Index" }
+	# 		it { should have_link('Create new employee', href: new_employee_path) }
+	# 		it "should list 15 users on the first page" do
+	# 			Employee.paginate(page: params[:page]).each do |item|
+	# 				it { should have_link(item.name, href: employee_path(item)) }
+	# 				it { should have_link('edit', href: edit_employee_path(item)) }
+	# 				it { should have_link('delete', href: employee_path(item)) }
+	# 			end
+	# 		end
+	# 	end
+
+	# 	feature "As a non admin user but a group owner" do
+	# 		let(:user) { FactoryGirl.create(:employee) }
+	# 		let(:group1) { FactoryGirl.create(:group) }
+	# 		let(:group2) { FactoryGirl.create(:group) }
+	# 		before do
+	# 			group1.accept_owner!(user)
+	# 			group2.accept_owner!(user)
+	# 			10.times { group1.accept_member!(FactoryGirl.create(:employee)) }
+	# 		end
+
+	# 		it { should have_content "Employee Index" }
+	# 		it { should_not have_link('Create new employee') }
+
+	# 		it "should list "
+
+	# 	end
+
+	# end
+
 	feature "Visit Employee#new page as an admin user" do
 		let(:admin) { FactoryGirl.create(:admin) }
 		before do 
