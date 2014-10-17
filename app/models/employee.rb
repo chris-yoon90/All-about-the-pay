@@ -35,13 +35,6 @@ class Employee < ActiveRecord::Base
 
 	validates_confirmation_of :password
 
-
-	# Access_level A: regular employee
-	# Access_level B: manager employee
-	# Access_level C: Site Admin
-	validates :access_level, presence: true,
-							inclusion: { in: %w(A B C) }
-
 	def self.new_token
 		SecureRandom.urlsafe_base64
 	end
@@ -62,18 +55,6 @@ class Employee < ActiveRecord::Base
 
 	def remember_token_authenticated?(remember_token)
 		BCrypt::Password.new(self.remember_digest) == remember_token
-	end
-
-	def is_site_admin?
-		self.access_level == 'C'
-	end
-
-	def is_manager?
-		self.access_level == 'B'
-	end
-
-	def is_regular_employee?
-		self.access_level == 'A'
 	end
 
 	def member?(group)

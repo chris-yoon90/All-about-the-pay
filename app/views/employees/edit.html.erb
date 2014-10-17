@@ -4,7 +4,7 @@
 		<h2>Information of <%= @employee.name %></h2>
 		<%= form_for(@employee) do |f|%>
 			<%= render 'shared/error_messages_template', model: @employee %>
-			<% if current_user.is_site_admin? %>
+			<% if current_user.isAdmin? %>
 				<%= render 'shared/employee_form_without_password', f: f %>
 				<% if @employee == current_user %>
 					<%= render 'shared/employee_form_password', f: f %>

@@ -1,15 +1,15 @@
 class EmployeesController < ApplicationController
 	before_action :non_logged_in_user_must_log_in
-	before_action :only_site_admin_has_access, only: [ :new, :create, :destroy ]
-	before_action :only_site_admin_has_access_to_other_users_page, only: [ :edit, :update ]
-	before_action :regular_employee_users_only_have_access_to_their_own_page, only: [ :show ]
+	before_action :only_site_admin_can_create_and_destroy_users, only: [ :new, :create, :destroy ]
+	before_action :only_site_admin_can_update_other_users, only: [ :edit, :update ]
+	before_action :only_site_admin_or_group_owner_can_access_group_member_page, only: [ :show ]
+	before_action :only_site_admin_or_group_owner_can_access_user_index, only: [ :index ]
 
 	def index
 		# @employees = Employee.paginate(page: params[:page])
 	end
 
 	def show
-		@employee = Employee.find(params[:id])
 	end
 
 	def new
@@ -48,39 +48,49 @@ class EmployeesController < ApplicationController
 			params_for_employee = params.require(:employee)
 			params_for_employee[:password] = password
 			params_for_employee[:password_confirmation] = password
-			params_for_employee.permit(:name, :email, :position, :access_level, :password, :password_confirmation)
+			params_for_employee.permit(:name, :email, :position, :password, :password_confirmation)
 		end
 
 		def employee_params_update(new_password)
-			if current_user.is_regular_employee?
-				return params.require(:employee).permit(:password, :password_confirmation)
-			elsif current_user.is_site_admin?
-				return params.require(:employee).permit(:name, :email, :position, :access_level, :password, :password_confirmation) if @employee == current_user
+			if current_user.isAdmin?
+				return params.require(:employee).permit(:name, :email, :position, :password, :password_confirmation) if @employee == current_user
 				return employee_params(new_password)
 			end
+			return params.require(:employee).permit(:password, :password_confirmation)
 		end
 
 		def generate_password
 			SecureRandom.urlsafe_base64
 		end
 
-		def only_site_admin_has_access
-			unless current_user.is_site_admin?
+		def only_site_admin_can_create_and_destroy_users
+			unless current_user.isAdmin?
 				redirect_to current_user
 			end
 		end
 
-		def only_site_admin_has_access_to_other_users_page
+		def only_site_admin_can_update_other_users
 			@employee = Employee.find(params[:id])
-			unless current_user.is_site_admin?
-				redirect_to current_user if current_user != @employee
+			unless current_user.isAdmin?
+				redirect_to current_user unless current_user?(@employee)
 			end
 		end
 
-		def regular_employee_users_only_have_access_to_their_own_page
+		def only_site_admin_or_group_owner_can_access_group_member_page
 			@employee = Employee.find(params[:id])
-			if current_user.is_regular_employee?
-				redirect_to current_user if current_user != @employee
+			unless current_user.isAdmin? || current_user?(@employee)
+				owned_groups = current_user.owned_groups
+				isMember =false;
+				owned_groups.each do |group|
+					isMember = true if @employee.member?(group)
+				end
+				redirect_to current_user unless isMember
+			end
+		end
+
+		def only_site_admin_or_group_owner_can_access_user_index
+			unless current_user.isAdmin? || !current_user.owned_groups.empty?
+				redirect_to current_user
 			end
 		end
 	

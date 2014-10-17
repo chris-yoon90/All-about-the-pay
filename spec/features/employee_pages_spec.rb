@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.feature "EmployeePages", :type => :feature do
 	subject { page }
 
-	feature "Visit Employee#new page as an admin user with access level C" do
+	feature "Visit Employee#new page as an admin user" do
 		let(:admin) { FactoryGirl.create(:admin) }
 		before do 
 			log_in admin
@@ -12,6 +12,9 @@ RSpec.feature "EmployeePages", :type => :feature do
 
 		it { should have_title(full_title('New Employee')) }
 		it { should have_selector('h2', text: "New Employee Information") }
+		it { should have_content('Name') }
+		it { should have_content('Email') }
+		it { should have_content('Position') }
 		it { should have_submit_button("Sign 'em up!") }
 
 
@@ -49,7 +52,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 	end
 
 	feature "Visit Employee#edit page" do
-		feature "As a non-site admin user" do
+		feature "As a non-site-admin user" do
 			let(:employee) { FactoryGirl.create(:employee) }
 			before do
 				log_in employee
@@ -63,7 +66,6 @@ RSpec.feature "EmployeePages", :type => :feature do
 			it { should_not have_content("Name") }
 			it { should_not have_content("Email") }
 			it { should_not have_content("Position") }
-			it { should_not have_content("Access level") }
 
 			feature "Update the user information" do
 				feature "With invalid information" do
@@ -94,7 +96,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 
 		end
 
-		feature "As a site admin with access level C" do
+		feature "As a site admin" do
 
 			let(:admin) { FactoryGirl.create(:admin) }
 			before { log_in admin }
@@ -109,7 +111,6 @@ RSpec.feature "EmployeePages", :type => :feature do
 				it { should have_content("Name") }
 				it { should have_content("Email") }
 				it { should have_content("Position") }
-				it { should have_content("Access level") }
 
 				feature "Update the current user information" do
 					feature "With invalid information" do
@@ -152,7 +153,6 @@ RSpec.feature "EmployeePages", :type => :feature do
 				it { should have_content("Name") }
 				it { should have_content("Email") }
 				it { should have_content("Position") }
-				it { should have_content("Access level") }
 
 				feature "Update the other user's information" do
 					let(:new_name) { "This Employee got promoted" }

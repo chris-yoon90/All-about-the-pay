@@ -7,11 +7,7 @@ FactoryGirl.define do
 		password_confirmation "eB^4kgL"
 
 		factory :admin do
-			access_level "C"
-		end
-
-		factory :manager do
-			access_level "B"
+			isAdmin true
 		end
 
 	end
