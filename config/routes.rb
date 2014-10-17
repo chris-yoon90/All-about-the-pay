@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
   
+  get 'groups/index'
+
+  get 'groups/show'
+
+  get 'groups/edit'
+
+  get 'groups/new'
+
   get 'sessions/new'
 
   root 'static_pages#home'
