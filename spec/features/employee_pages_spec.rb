@@ -3,45 +3,63 @@ require 'rails_helper'
 RSpec.feature "EmployeePages", :type => :feature do
 	subject { page }
 
-	# feature "Visit Employee#index page" do
-	# 	before { 20.times { FactoryGirl.create(:employee) } }
+	feature "Visit Employee#index page" do
+		feature "As an admin user" do
+			let(:admin) { FactoryGirl.create(:admin) }
+			before do
+				20.times { FactoryGirl.create(:employee) }
+				log_in admin
+				visit employees_path
+			end
 
-	# 	feature "As an admin user" do
-	# 		let(:admin) { FactoryGirl.create(:admin) }
-	# 		before do
-	# 			log_in admin
-	# 			visit employees_path
-	# 		end
+			it { should have_content "Employee Index" }
+			it { should have_link('Create new employee', href: new_employee_path) }
+			it { should_not have_link('delete', href: employee_path(admin)) }
+			it "should list 15 users on the first page" do
+				Employee.paginate(page: 1).each do |item|
+					should have_link(item.name, href: employee_path(item)) 
+					should have_link('edit', href: edit_employee_path(item)) 
+				end
+			end
 
-	# 		it { should have_content "Employee Index" }
-	# 		it { should have_link('Create new employee', href: new_employee_path) }
-	# 		it "should list 15 users on the first page" do
-	# 			Employee.paginate(page: params[:page]).each do |item|
-	# 				it { should have_link(item.name, href: employee_path(item)) }
-	# 				it { should have_link('edit', href: edit_employee_path(item)) }
-	# 				it { should have_link('delete', href: employee_path(item)) }
-	# 			end
-	# 		end
-	# 	end
+			feature "Click 'delete' button" do
+				it { expect { click_link('delete', match: :first) }.to change(Employee, :count).by(-1) }
 
-	# 	feature "As a non admin user but a group owner" do
-	# 		let(:user) { FactoryGirl.create(:employee) }
-	# 		let(:group1) { FactoryGirl.create(:group) }
-	# 		let(:group2) { FactoryGirl.create(:group) }
-	# 		before do
-	# 			group1.accept_owner!(user)
-	# 			group2.accept_owner!(user)
-	# 			10.times { group1.accept_member!(FactoryGirl.create(:employee)) }
-	# 		end
+				feature "Success message is shown" do
+					before { click_link('delete', match: :first) }
+					it { should have_success_message("deleted") }
+				end
+			end
 
-	# 		it { should have_content "Employee Index" }
-	# 		it { should_not have_link('Create new employee') }
+		end
 
-	# 		it "should list "
+		feature "As a non admin user but a group owner" do
+			let(:user) { FactoryGirl.create(:employee) }
+			let(:group1) { FactoryGirl.create(:group) }
+			let(:group2) { FactoryGirl.create(:group) }
+			before do
+				group1.accept_owner!(user)
+				group2.accept_owner!(user)
+				10.times { group1.accept_member!(FactoryGirl.create(:employee)) }
+				10.times { group2.accept_member!(FactoryGirl.create(:employee)) }
+				log_in user
+				visit employees_path
+			end
 
-	# 	end
+			it { should have_text "Employee Index" }
+			it { should_not have_link('Create new employee') }
 
-	# end
+			it "should list all subordinates" do
+				user.subordinates.paginate(page: 1).each do |item|
+					should have_link(item.name, href: employee_path(item)) 
+					should_not have_link('edit', href: edit_employee_path(item))
+					should_not have_link('delete', href: employee_path(item)) 
+				end
+			end
+
+		end
+
+	end
 
 	feature "Visit Employee#new page as an admin user" do
 		let(:admin) { FactoryGirl.create(:admin) }
@@ -127,7 +145,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 					end
 
 					specify { expect(employee.reload.authenticate(new_password)).to be_truthy }
-					it { should have_selector('div.alert.alert-success', text: "success")}
+					it { should have_success_message("success") }
 					it { should have_title(full_title(employee.name)) }
 
 				end
@@ -171,7 +189,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 
 						it { expect(admin.reload.name).to eq new_name }
 						it { should_not have_error_message("error") }
-						it { should have_selector('div.alert.alert-success', text: "success")}
+						it { should have_success_message("success") }
 						it { should have_title(full_title(new_name)) }
 
 					end
@@ -205,7 +223,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 					it { expect(employee.reload.name).to eq new_name }
 					it { should have_title(full_title(new_name)) }
 					it { should_not have_error_message("error") }
-					it { should have_selector('div.alert.alert-success', text: "success")}
+					it { should have_success_message("success") }
 					
 				end
 

@@ -41,6 +41,12 @@ class EmployeesController < ApplicationController
 	end
 
 	def destroy
+		employee = Employee.find(params[:id])
+		unless current_user?(employee)
+			deleted_user = employee.destroy
+			flash[:success] = "Employee '#{deleted_user.name}' has been deleted."
+		end
+		redirect_to employees_path
 	end
 
 	private
@@ -89,7 +95,11 @@ class EmployeesController < ApplicationController
 		end
 
 		def only_site_admin_or_group_owner_can_access_user_index
-			unless current_user.isAdmin? || !current_user.owned_groups.empty?
+			if current_user.isAdmin?
+				@employees = Employee.all.paginate(page: params[:page])
+			elsif current_user.owned_groups.any?
+				@employees = current_user.subordinates.paginate(page: params[:page])
+			else
 				redirect_to current_user
 			end
 		end

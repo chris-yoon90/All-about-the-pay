@@ -105,4 +105,13 @@ RSpec.describe "AuthenticationRequests", :type => :request do
 
 	end
 
+	describe "As an admin user" do
+		let(:admin) { FactoryGirl.create(:admin) }
+		before { log_in admin, no_capybara: true }
+		describe "Send DELETE request to delete it's own account" do
+			before { delete employee_path(admin) }
+			specify { expect(response).to redirect_to(employees_path) }
+		end
+	end
+
 end

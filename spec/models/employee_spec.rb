@@ -14,6 +14,23 @@ RSpec.describe Employee, :type => :model do
   it { should respond_to :password_confirmation }
   it { should respond_to :isAdmin }
 
+  describe "subordinates" do
+    let(:group1) { FactoryGirl.create(:group) }
+    let(:group2) { FactoryGirl.create(:group) }
+    before do 
+      employee.save
+      10.times { FactoryGirl.create(:employee) }
+      employees = Employee.last(10)
+      group1.accept_owner!(employee)
+      group2.accept_owner!(employee)
+      employees[0..6].each { |member| group1.accept_member!(member) }
+      employees[5..9].each { |member| group2.accept_member!(member) }
+    end
+
+    it { expect(employee.subordinates.count).to eq 10 }
+
+  end
+
   describe "isAdmin attribute" do
     before do 
       employee.save
