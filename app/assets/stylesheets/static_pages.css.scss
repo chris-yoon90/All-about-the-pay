@@ -1,13 +1,18 @@
 
-@media (min-width: 992px) {
-	.home_wrapper {
+@media (min-width: $screen-md-min) {
+	.home-wrapper {
+		display:table-cell;
 		color: #000;
 		text-align: center;
-		margin-right: auto;
-		margin-left: auto;
+		vertical-align: middle;
 
 		h1, h2 {
 			text-align: center;
+		}
+
+		.home-wrapper-inner {
+			width: 800px;
+			margin: 0 auto;
 		}
 
 	}
