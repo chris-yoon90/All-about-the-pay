@@ -26,9 +26,30 @@ body {
 	@extend .has-error;
 }
 
+/* typography */
+
 h1, h2, h3, h4, h5, h6 {
 	font-family: "Times New Roman", Georgia, Serif;
 	line-height: 1;
+}
+
+h1 {
+	font-size: 2.7em;
+	letter-spacing: -2px;
+	margin-bottom: 20px;
+}
+
+h2 {
+	font-size: 2.2em;
+	letter-spacing: -2px;
+	margin-bottom: 20px;
+}
+
+h3 {
+	font-size: 1.6em;
+	letter-spacing: -1px;
+	margin-bottom: 20px;
+	font-weight: normal;
 }
 
 .test-container {
@@ -37,7 +58,134 @@ h1, h2, h3, h4, h5, h6 {
 	display: table;
 }
 
+/* Header */
+
+header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right:0;
+	z-index: 100;
+	background-color: #fff;
+
+	.header-brand {
+		font-size: 20px;
+		color: #848484;
+		font-weight: bold;
+		margin: 5px auto;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
+	nav {
+		border-bottom: 1px solid #E6E6E6;
+		padding-bottom: 5px;
+		text-align: center;
+	}
+
+}
+
+/* Footer */
+
+footer {
+	color: #848484;
+
+	.footer-inner {
+		padding-top: 15px;
+		border-top: 1px solid #E6E6E6;
+	}
+
+	small {
+		font-weight: bold;
+	}
+
+	a {
+		color: $gray-light;
+		&:hover {
+			color: #000000;
+			text-decoration: none;
+		}
+	}
+
+	ul {
+		list-style-type: none;
+
+		li {
+			display: inline;
+		}
+	}
+
+}
+
 /* Layout */
+
+@media (min-width: $screen-sm-min) {
+	body {
+		padding-top: 100px;
+	}
+
+	/* typography */
+
+	h1 {
+		font-size: 2.7em;
+		letter-spacing: -2px;
+		margin-bottom: 20px;
+	}
+
+	h2 {
+		font-size: 2.2em;
+		letter-spacing: -2px;
+		margin-bottom: 20px;
+	}
+
+	h3 {
+		font-size: 1.6em;
+		letter-spacing: -1px;
+		margin-bottom: 20px;
+		font-weight: normal;
+	}
+
+	/* Header */
+
+	header {
+
+		nav {
+			margin: 30px 20px 0 20px;
+		}
+
+		.header-brand {
+			float: left;
+		}
+
+		.nav {
+			float: right;
+		}
+
+	}
+
+	/* Footer */
+
+	footer {
+
+		.footer-inner {
+			margin: 0 20px;
+		}
+
+		small {
+			font-size: 14px;
+			float: left;
+		}
+
+		ul {
+			float: right;
+		}
+
+	}
+
+
+}
 
 @media (min-width: $screen-md-min) {
 
@@ -69,30 +217,9 @@ h1, h2, h3, h4, h5, h6 {
 	/* Header */
 
 	header {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right:0;
-		z-index: 100;
-		background-color: #fff;
-
 		nav {
 			margin: 30px auto 0 auto;
 			width: 700px;
-			border-bottom: 1px solid #E6E6E6;
-			padding-bottom: 5px;
-		}
-
-		.header-brand {
-			color: #848484;
-			font-size: 20px;
-			font-weight: bold;
-			float: left;
-			margin: 5px auto;
-
-			&:hover {
-				text-decoration: none;
-			}
 		}
 
 		.nav {
@@ -104,38 +231,15 @@ h1, h2, h3, h4, h5, h6 {
 	/* Footer */
 
 	footer {
-		width: 700px;
-		margin: 0 auto;
-		padding-top: 15px;
-		border-top: 1px solid #E6E6E6;
-		color: #848484;
 
-		small {
-			font-size: 14px;
-			float: left;
-			font-weight: bold;
-		}
-
-		a {
-			color: $gray-light;
-			&:hover {
-				color: #000000;
-				text-decoration: none;
-			}
-		}
-
-
-		ul {
-			float: right;
-			list-style-type: none;
-
-			li {
-				display: inline;
-			}
+		.footer-inner {
+			margin: 0 auto;
+			width: 700px;
 		}
 
 	}
 
-
 }
+
+
 

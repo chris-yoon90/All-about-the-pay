@@ -1,11 +1,13 @@
 <% provide(:title, 'New Employee') %>
-<div class="row">
-	<div class="col-xs-6 col-xs-offset-3">
-		<h2>New Employee Information</h2>
-		<%= form_for(@employee) do |f|%>
-			<%= render 'shared/error_messages_template', model: @employee %>
-			<%= render 'shared/employee_form_without_password', f: f %>
-			<%= f.submit "Sign 'em up!", class: "btn btn-primary" %>
-		<% end %>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-6 col-xs-offset-3">
+			<h2>New Employee Information</h2>
+			<%= form_for(@employee) do |f|%>
+				<%= render 'shared/error_messages_template', model: @employee %>
+				<%= render 'shared/employee_form_without_password', f: f %>
+				<%= f.submit "Sign 'em up!", class: "btn btn-primary" %>
+			<% end %>
+		</div>
 	</div>
 </div>
