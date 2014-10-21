@@ -1,17 +1,16 @@
-.home_wrapper {
-	color: #D8D8D8;
-	text-align: center;
-	margin-right: auto;
-	margin-left: auto;
 
-	h1, h2 {
-		text-align: center;
-	}
-
-}
-
-@media (min-width: 675px) {
+@media (min-width: 992px) {
 	.home_wrapper {
-		width: 650px;
+		color: #000;
+		text-align: center;
+		margin-right: auto;
+		margin-left: auto;
+
+		h1, h2 {
+			text-align: center;
+		}
+
 	}
 }
+
+

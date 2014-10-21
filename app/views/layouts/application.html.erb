@@ -14,15 +14,16 @@
     	<% end -%>
 
 		<%= yield %>
-
-		<%= render 'layouts/footer' %>
-
-		<% if Rails.env.development? %>
-			<%= debug({ original_request: request.method,
-				overridden_request: request.request_method,
-				params: params}) %>
-		<% end %>
 	</div>
 
+	<%= render 'layouts/footer' %>
+
+	<% if Rails.env.development? %>
+	<div class="container">
+		<%= debug({ original_request: request.method,
+			overridden_request: request.request_method,
+			params: params}) %>
+	</div>
+	<% end %>
 </body>
 </html>

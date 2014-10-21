@@ -6,7 +6,6 @@ class EmployeesController < ApplicationController
 	before_action :only_site_admin_or_group_owner_can_access_user_index, only: [ :index ]
 
 	def index
-		# @employees = Employee.paginate(page: params[:page])
 	end
 
 	def show
