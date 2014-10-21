@@ -3,7 +3,12 @@
 		<%= link_to "All-about-the-pay", root_path, class: "header-brand"%>
 		<ul class="nav nav-pills">
 		<% if logged_in? %>
-			<li><%= link_to "Log out", logout_path, method: 'delete' %></li>
+			<% if current_user.isAdmin? %>
+				<%= render 'layouts/header_admin_menus' %>
+			<% else %>
+				<%= render 'layouts/header_non_admin_menus' %>
+			<% end %>
+			<%= render 'layouts/header_account_dropdown_menu' %>
 		<% else %>
 			<li class="<%= 'active' if current_page?(login_path) %>"><%= link_to "Log in", login_path %></li>
 		<% end %>

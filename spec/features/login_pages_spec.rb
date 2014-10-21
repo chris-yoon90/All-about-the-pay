@@ -12,6 +12,22 @@ RSpec.feature "LoginPages", :type => :feature do
     it { should have_content("Remember me") }
   end
 
+  shared_examples "Header after login" do
+    it { should_not have_link "Log in" }
+    it { should have_link "Log out" }
+    it { should have_link "Edit Account Info" }
+    it { should have_link 'Account' }
+    it { should have_link 'Edit Account Info' }
+  end
+
+  shared_examples "Header after logout" do
+    it { should have_title(full_title("Log in")) }
+    it { should_not have_link "Log out" }
+    it { should_not have_link "Account" }
+    it { should_not have_link "Edit Account Info" }
+    it { should have_link "Log in" }
+  end
+
   feature "Visit log in page" do
   	before { visit login_path }
 
@@ -20,23 +36,65 @@ RSpec.feature "LoginPages", :type => :feature do
   	feature "Log in" do
 
   		feature "With valid user" do
-  			let(:valid_employee) { FactoryGirl.create(:employee) }
-  			before do
-  				fill_in "Email", with: valid_employee.email
-  				fill_in "Password", with: valid_employee.password
-  				click_button "Log in"
-  			end
-  			
-  			it { should have_title(full_title(valid_employee.name)) }
-  			it { should_not have_link "Log in" }
-  			it { should have_link "Log out" }
 
-        feature "And log out right after" do
-          before { click_link "Log out" }
+        feature "As a non-admin user" do
+    			let(:valid_employee) { FactoryGirl.create(:employee) }
+    			before do
+    				fill_in "Email", with: valid_employee.email
+    				fill_in "Password", with: valid_employee.password
+    				click_button "Log in"
+    			end
+    			
+    			it { should have_title(full_title(valid_employee.name)) }
+    			it_should_behave_like "Header after login"
+          it { should have_link "Time Sheet", href: employee_path(valid_employee) }
+          it { should_not have_link "Employees" }
 
-          it { should have_title(full_title("Log in")) }
-          it { should_not have_link "Log out" }
-          it { should have_link "Log in" }
+          feature "If the user has subordinates" do
+            let(:group) { FactoryGirl.create(:group) }
+            let(:subordinate) { FactoryGirl.create(:employee) }
+            before do
+              group.accept_owner!(valid_employee)
+              group.accept_member!(subordinate)
+              visit root_path #to refresh the page
+            end
+
+            it { should have_link "Employees", href: employees_path }
+
+          end
+
+          feature "And log out right after" do
+            before { click_link "Log out" }
+            it_should_behave_like "Header after logout"
+          end
+        end
+
+        feature "As an admin user" do
+          let(:admin) { FactoryGirl.create(:admin) }
+          before do
+            fill_in "Email", with: admin.email
+            fill_in "Password", with: admin.password
+            click_button "Log in"
+          end
+
+          it { should have_title(full_title(admin.name)) }
+          it_should_behave_like "Header after login"
+          it { should_not have_link 'Time Sheet'}
+          it { should have_link 'Employees' }
+          it { should have_link 'Employee Index', href: employees_path }
+          it { should have_link 'Create New Employee', href: new_employee_path }
+          it { should have_link 'Groups' }
+          it { should have_link 'Group Index', href: groups_path }
+          it { should have_link 'Create New Group', href: new_group_path }
+
+          feature "And log out right after" do
+            before { click_link "Log out" }
+
+            it_should_behave_like "Header after logout"
+            it { should_not have_link 'Employees' }
+            it { should_not have_link 'Groups' }
+          end
+
         end
 
   		end
