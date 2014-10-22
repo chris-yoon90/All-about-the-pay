@@ -80,10 +80,8 @@ RSpec.feature "LoginPages", :type => :feature do
           it { should have_title(full_title(admin.name)) }
           it_should_behave_like "Header after login"
           it { should_not have_link 'Time Sheet'}
-          it { should have_link 'Employees' }
           it { should have_link 'Employee Index', href: employees_path }
           it { should have_link 'Create New Employee', href: new_employee_path }
-          it { should have_link 'Groups' }
           it { should have_link 'Group Index', href: groups_path }
           it { should have_link 'Create New Group', href: new_group_path }
 
