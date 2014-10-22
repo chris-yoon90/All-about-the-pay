@@ -5,6 +5,10 @@
 	box-sizing: border-box;
 }
 
+html {
+	font-size:62.5%;
+}
+
 html, body {
 	height: 100%;
 }
@@ -35,19 +39,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-	font-size: 2.3em;
+	font-size: 3.3rem;
 	letter-spacing: -2px;
 	margin-bottom: 20px;
 }
 
 h2 {
-	font-size: 1.7em;
+	font-size: 2.8rem;
 	letter-spacing: -2px;
 	margin-bottom: 20px;
 }
 
 h3 {
-	font-size: 1.4em;
+	font-size: 2.1rem;
 	letter-spacing: -1px;
 	margin-bottom: 20px;
 	font-weight: normal;
@@ -70,7 +74,7 @@ header {
 	background-color: #fff;
 
 	.header-brand {
-		font-size: 20px;
+		font-size: 2.0rem;
 		color: #848484;
 		font-weight: bold;
 		margin: 5px auto;
@@ -111,12 +115,13 @@ footer {
 
 	small {
 		font-weight: bold;
-		font-size: 14px;
+		font-size: 1.4rem;
 		float: left;
 	}
 
 	a {
 		color: $gray-light;
+		font-size: 1.3rem;
 		&:hover {
 			color: #000000;
 			text-decoration: none;
@@ -141,17 +146,17 @@ footer {
 	/* typography */
 
 	h1 {
-		font-size: 2.7em;
+		font-size: 3.8rem;
 		margin-bottom: 20px;
 	}
 
 	h2 {
-		font-size: 2.2em;
+		font-size: 3.3rem;
 		margin-bottom: 20px;
 	}
 
 	h3 {
-		font-size: 1.6em;
+		font-size: 2.5rem;
 		margin-bottom: 20px;
 	}
 

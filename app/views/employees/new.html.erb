@@ -2,7 +2,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-xs-6 col-xs-offset-3">
-			<h2>New Employee Information</h2>
+			<h3>New Employee</h3>
 			<%= form_for(@employee) do |f|%>
 				<%= render 'shared/error_messages_template', model: @employee %>
 				<%= render 'shared/employee_form_without_password', f: f %>

@@ -2,3 +2,17 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.employee-index-header {
+	@extend .clearfix;
+
+	h3 {
+		float: left;
+	}
+
+	.btn-employee-create {
+		@extend .btn; 
+		@extend .btn-default;
+		float: right;
+		margin: 15px 0;
+	}
+}

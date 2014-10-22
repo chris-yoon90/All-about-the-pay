@@ -69,7 +69,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 		end
 
 		it { should have_title(full_title('New Employee')) }
-		it { should have_selector('h2', text: "New Employee Information") }
+		it { should have_selector('h2', text: "New Employee") }
 		it { should have_content('Name') }
 		it { should have_content('Email') }
 		it { should have_content('Position') }
