@@ -82,6 +82,7 @@ header {
 	}
 
 	nav {
+		@extend .clearfix;
 		margin: 15px 10px 0 10px;
 		border-bottom: 1px solid #E6E6E6;
 		padding-bottom: 5px;
@@ -89,7 +90,10 @@ header {
 	}
 
 	.nav {
-		float: right;
+		display: table;
+		margin-top: 10px;
+		margin-right: auto;
+		margin-left: auto;
 	}
 
 }
@@ -164,6 +168,7 @@ footer {
 		}
 
 		.nav {
+			margin-top: 0;
 			float: right;
 		}
 
