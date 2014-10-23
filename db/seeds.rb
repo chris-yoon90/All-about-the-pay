@@ -15,7 +15,7 @@ Employee.create(name: "Admin",
 				isAdmin: true)
 
 #create employees
-50.times do |i|
+100.times do |i|
 	Employee.create(name: Faker::Name.name, 
 					email: "employee_#{i}@example.com", 
 					position: Faker::Name.title, 

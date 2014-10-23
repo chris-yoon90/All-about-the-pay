@@ -2,13 +2,12 @@
 	color: #000;
 	text-align: center;
 	vertical-align: middle;
-	display:table-cell;
 }
 
 @media (min-width: $screen-sm-min) {
 	.home-wrapper {
 		color: #000;
-
+		display:table-cell;
 		.home-wrapper-inner {
 			width: 600px;
 			margin: 0 auto;

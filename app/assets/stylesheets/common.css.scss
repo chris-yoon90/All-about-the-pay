@@ -58,10 +58,8 @@ h3 {
 	font-weight: normal;
 }
 
-.test-container {
-	height: 90%;
+.main-container {
 	width: 100%;
-	display: table;
 }
 
 /* Header */
@@ -86,10 +84,11 @@ header {
 		}
 	}
 
-	nav {
-		@extend .clearfix;
-		margin: 15px 10px 0 10px;
+	.header-nav {
+		margin-top: 15px;
 		border-bottom: 1px solid #E6E6E6;
+		padding-left: 0;
+		padding-right: 0;
 		padding-bottom: 5px;
 		text-align: center;
 	}
@@ -145,7 +144,7 @@ footer {
 	color: #848484;
 
 	.footer-inner {
-		margin: 0 10px;
+		margin-top: 15px;
 		padding-top: 15px;
 		border-top: 1px solid #E6E6E6;
 	}
@@ -176,9 +175,21 @@ footer {
 
 }
 
+/* Pagination */
+
+div.pagination {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
 /* Layout */
 
 @media (min-width: $screen-sm-min) {
+
+	.main-container {
+		height: 88%;
+		display: table;
+	}
 
 	body {
 		padding-top: 100px; 
@@ -205,8 +216,10 @@ footer {
 
 	header {
 
-		nav {
-			margin: 30px 20px 0 20px;
+		.header-nav {
+			margin-top: 30px;
+			padding-left: 15px;
+			padding-right: 15px;
 		}
 
 		.header-brand {
@@ -216,42 +229,6 @@ footer {
 		.nav {
 			margin-top: 0;
 			float: right;
-		}
-
-	}
-
-	/* Footer */
-
-	footer {
-
-		.footer-inner {
-			margin: 0 20px;
-		}
-
-	}
-
-
-}
-
-@media (min-width: $screen-md-min) {
-
-	/* Header */
-
-	header {
-		nav {
-			margin: 30px auto 0 auto;
-			width: 700px;
-		}
-
-	}
-
-	/* Footer */
-
-	footer {
-
-		.footer-inner {
-			margin: 0 auto;
-			width: 700px;
 		}
 
 	}
