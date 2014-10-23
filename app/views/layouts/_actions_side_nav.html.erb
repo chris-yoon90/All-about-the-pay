@@ -1,0 +1,16 @@
+<div class="col-md-3 hidden-xs hidden-sm">
+<% if current_user.isAdmin? || current_user.subordinates.any? %>
+	<ul class="actions-side-nav">
+		<li class="action-header">Employees</li>
+		<li><%= link_to "Employee Index", employees_path %></li>
+		<% if current_user.isAdmin? %>
+		<li><%= link_to "Create New Employee", new_employee_path %></li>
+		<% end %>
+		<li class="action-header">Groups</li>
+		<li><%= link_to "Group Index", groups_path %></li>
+		<% if current_user.isAdmin? %>
+		<li><%= link_to "Create New Group", new_group_path %></li>
+		<% end %>
+	</ul>
+<% end %>
+</div>

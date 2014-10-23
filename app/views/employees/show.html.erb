@@ -1,4 +1,7 @@
 <% provide(:title, @employee.name) %>
 <div class="container">
-	<h1><%= @employee.name %></h1>
+	<div class="row">
+		<%= render 'layouts/actions_side_nav' %>
+		<h1><%= @employee.name %></h1>
+	</div>
 </div>

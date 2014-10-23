@@ -13,7 +13,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 			end
 
 			it { should have_content "Employee Index" }
-			it { should have_link('Create new employee', href: new_employee_path) }
+			it { should have_link('Create New Employee', href: new_employee_path) }
 			it { should_not have_link('delete', href: employee_path(admin)) }
 			it "should list 15 users on the first page" do
 				Employee.paginate(page: 1).each do |item|
@@ -69,7 +69,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 		end
 
 		it { should have_title(full_title('New Employee')) }
-		it { should have_selector('h2', text: "New Employee") }
+		it { should have_content("New Employee") }
 		it { should have_content('Name') }
 		it { should have_content('Email') }
 		it { should have_content('Position') }
