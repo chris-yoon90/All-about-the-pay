@@ -1,11 +1,11 @@
 ul.employees-list {
 	list-style: none;
-	border: 1px solid;
+	border: 1px solid #A4A4A4;
 	padding: 0;
 	border-radius: 10px;
 
 	.list-item {
-		border-bottom: 1px solid;
+		border-bottom: 1px solid #D8D8D8;
 		padding-top: 10px;
 		padding-bottom: 10px;
 
@@ -35,6 +35,13 @@ ul.employees-list {
 							border: none;
 						}
 
+						a {
+							&:hover {
+								color: #013ADF;
+								text-decoration: none;
+							}
+						}
+
 					}
 				}
 			}
@@ -54,7 +61,7 @@ ul.employees-list {
 					color: #848484;
 					&:hover {
 						text-decoration: none;
-						color: #000;
+						color: #585858;
 					}
 				}
 			}
