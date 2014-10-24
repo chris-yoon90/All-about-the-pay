@@ -18,6 +18,7 @@ RSpec.feature "LoginPages", :type => :feature do
     it { should have_link "Edit Account Info" }
     it { should have_link 'Account' }
     it { should have_link 'Edit Account Info' }
+    it { should have_link 'Time Sheet'}
   end
 
   shared_examples "Header after logout" do
@@ -47,7 +48,6 @@ RSpec.feature "LoginPages", :type => :feature do
     			
     			it { should have_title(full_title(valid_employee.name)) }
     			it_should_behave_like "Header after login"
-          it { should have_link "Time Sheet", href: employee_path(valid_employee) }
           it { should_not have_link "Employees" }
 
           feature "If the user has subordinates" do
@@ -79,7 +79,6 @@ RSpec.feature "LoginPages", :type => :feature do
 
           it { should have_title(full_title(admin.name)) }
           it_should_behave_like "Header after login"
-          it { should_not have_link 'Time Sheet'}
           it { should have_link 'Employee Index', href: employees_path }
           it { should have_link 'Create New Employee', href: new_employee_path }
           it { should have_link 'Group Index', href: groups_path }

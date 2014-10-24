@@ -3,9 +3,7 @@
 		Account <span class="caret"></span>
 	</a>
 	<ul class="dropdown-menu" role="menu">
-		<% unless current_user.isAdmin? %>
 		<li><%= link_to "Time Sheet", employee_path(current_user) %></li>
-		<% end %>
 		<li><%= link_to "Edit Account Info", edit_employee_path(current_user) %></li>
 		<li class="divider"></li>
 		<li><%= link_to "Log out", logout_path, method: 'delete' %></li>
