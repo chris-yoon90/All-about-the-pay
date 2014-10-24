@@ -1,0 +1,14 @@
+<li class="list-item clearfix">
+	<%= image_tag "http://placehold.it/100x100",alt: employee.name, class: "employee-image" %>
+	<div class="employee-control clearfix">
+		<%= link_to employee.name, employee_path(employee), class: "employee-name" %> 
+		<% if current_user.isAdmin? %>
+		<ul class="employee-inner-control">
+			<li><%= link_to "edit", edit_employee_path(employee) %></li>
+			<% unless current_user?(employee) %>
+			<li><%= link_to("delete", employee_path(employee), method: :delete) %></li>
+			<% end %>
+		</ul>
+		<% end %>
+	</div>
+</li>

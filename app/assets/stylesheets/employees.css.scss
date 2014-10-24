@@ -1,3 +1,82 @@
 ul.employees-list {
 	list-style: none;
+	border: 1px solid;
+	padding: 0;
+	border-radius: 10px;
+
+	.list-item {
+		border-bottom: 1px solid;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		padding-left: 10px;
+		padding-right: 20px;
+
+		.employee-image {
+			max-height: 100px;
+			max-width: 100px;
+			display: inline-block;
+		}
+
+		.employee-control {
+			display: inline-block;
+			float: right;
+			text-align: right;
+		}
+
+		.employee-inner-control {
+			list-style: none;
+			margin-top: 5px;
+			
+			li {
+				display: inline;
+				padding-right: 5px;
+				border-right: 1px solid;
+
+				&:last-child {
+					border: none;
+				}
+
+			}
+		}
+
+		.employee-name {
+			color: #848484;
+			font-weight: bold;
+			font-size: 1.6rem;
+
+			&:hover {
+				text-decoration: none;
+				color: #000;
+			}
+
+		}
+
+		&:hover {
+			background-color: #eeeeee;
+		}
+
+		&:first-child {
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+		}
+
+		&:last-child {
+			border: none;
+			border-bottom-left-radius: 10px;
+			border-bottom-right-radius: 10px;
+		}
+
+	}
+
 }
+
+@media (min-width: $screen-sm-min) {
+	ul.employees-list {
+
+		.list-item {
+			padding-left: 20px;
+		}
+	}
+
+}
+

@@ -6,18 +6,15 @@
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-8">
 			<h3>Employee Index</h3>
-			<%= will_paginate @employees %>
+			<div class="clearfix">
+				<%= will_paginate @employees, class: "pull-right" %>
+			</div>
 			<ul class="employees-list">
-			<% @employees.each do |employee| %>
-				<li><%= link_to employee.name, employee_path(employee) %> 
-					<% if current_user.isAdmin? %>
-					| <%= link_to "edit", edit_employee_path(employee) %> 
-					| <%= link_to("delete", employee_path(employee), method: :delete) unless current_user?(employee) %> 
-					<% end %>
-				</li>
-			<% end %>
+			<%= render @employees %>
 			</ul>
-			<%= will_paginate @employees %>
+			<div class="clearfix">
+				<%= will_paginate @employees, class: "pull-right" %>
+			</div>
 		</div>
 	</div>
 </div>
