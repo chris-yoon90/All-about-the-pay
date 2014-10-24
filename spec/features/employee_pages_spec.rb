@@ -15,10 +15,11 @@ RSpec.feature "EmployeePages", :type => :feature do
 			it { should have_content "Employee Index" }
 			it { should have_link('Create New Employee', href: new_employee_path) }
 			it { should_not have_link('delete', href: employee_path(admin)) }
-			it "should list 15 users on the first page" do
+			it "should list 10 users on the first page" do
 				Employee.paginate(page: 1).each do |item|
 					should have_link(item.name, href: employee_path(item)) 
 					should have_link('edit', href: edit_employee_path(item)) 
+					should have_content(item.position)
 				end
 			end
 

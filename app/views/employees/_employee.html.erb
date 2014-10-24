@@ -1,14 +1,29 @@
-<li class="list-item clearfix">
-	<%= image_tag "http://placehold.it/100x100",alt: employee.name, class: "employee-image" %>
-	<div class="employee-control clearfix">
-		<%= link_to employee.name, employee_path(employee), class: "employee-name" %> 
-		<% if current_user.isAdmin? %>
-		<ul class="employee-inner-control">
-			<li><%= link_to "edit", edit_employee_path(employee) %></li>
-			<% unless current_user?(employee) %>
-			<li><%= link_to("delete", employee_path(employee), method: :delete) %></li>
-			<% end %>
-		</ul>
-		<% end %>
+<li class="list-item"> 
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-5 col-sm-5 col-md-4">
+				<%= image_tag "http://placehold.it/100x100",alt: employee.name, class: "employee-image" %>
+			</div>
+
+			<div class="col-xs-7 col-sm-7 col-md-8">
+				<ul class="employee-control">
+					<li class="employee-name"><%= link_to employee.name, employee_path(employee) %></li>
+					<li class="position"><%= employee.position %></li>
+					<% if employee.groups.pluck(:name).any? %>
+					<li class="group-membership hidden-xs"><strong>Membership:</strong> <%= employee.groups.pluck(:name).join(', ') %></li>
+					<% end %>
+					<% if current_user.isAdmin? %>
+					<li>
+						<ul class="employee-inner-control">
+							<li><%= link_to "edit", edit_employee_path(employee) %></li>
+							<% unless current_user?(employee) %>
+							<li><%= link_to("delete", employee_path(employee), method: :delete) %></li>
+							<% end %>
+						</ul>
+					</li>
+					<% end %>
+				</ul>
+			</div>
+		</div>	
 	</div>
 </li>
