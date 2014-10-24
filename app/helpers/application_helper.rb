@@ -5,7 +5,7 @@ module ApplicationHelper
 	WillPaginate.per_page = 10
 
 	def full_title(title) 
-		default_title = "All-About-The-Pay"
+		default_title = "PayMeNow"
 		unless(title.empty?)
 			default_title += " | #{title}"
 		end

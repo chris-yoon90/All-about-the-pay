@@ -7,7 +7,7 @@ RSpec.describe ApplicationHelper do
 		end
 
 		it "should include th base title" do
-			expect(full_title("foo")).to match(/^All-About-The-Pay/)
+			expect(full_title("foo")).to match(/^PayMeNow/)
 		end
 
 		it "should not include a bar for the home page" do

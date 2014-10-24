@@ -6,7 +6,7 @@ RSpec.feature "StaticPages", :type => :feature do
 
  	feature "Landing page" do
  		let(:heading) { "Keep track of your hours" }
- 		let(:github_address) { "https://github.com/chris-yoon90/All-about-the-pay" }
+ 		let(:github_address) { "https://github.com/chris-yoon90/PayMeNow" }
  		
  		before { visit root_path }
 
@@ -15,7 +15,7 @@ RSpec.feature "StaticPages", :type => :feature do
  		it { should have_link("Help", href: help_path) }
  		it { should have_link("Log in", href: login_path) }
  		it { should have_link("Github", href: github_address) }
- 		it { should have_link("All-about-the-pay", href: root_path) }
+ 		it { should have_link("PayMeNow", href: root_path) }
 
  		scenario "clicking on links should bring the user to the right places" do
  			click_link "Log in"
