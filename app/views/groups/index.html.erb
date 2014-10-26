@@ -1,2 +1,27 @@
-<h1>Groups#index</h1>
-<p>Find me in app/views/groups/index.html.erb</p>
+<% provide(:title, 'Groups') %>
+<div class="container">
+	<div class="row">
+		<div class="hidden-xs hidden-sm">
+		<%= render 'layouts/actions_side_nav' %>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-8">
+			<div class="clearfix">
+				<%= will_paginate @groups, class: "pull-right" %>
+			</div>
+			<h3>Group Index</h1>
+				<ul>
+				<% @groups.each do |group| %>
+					<li>
+						<%= link_to group.name, group_path(group) %>
+						| <%= link_to 'edit', edit_group_path(group) %>
+						| <%= link_to 'delete', group_path(group) %>
+					</li>
+				<% end %>
+				</ul>
+			<div class="clearfix">
+				<%= will_paginate @groups, class: "pull-right" %>
+			</div>
+		</h3>
+	</div>
+</div>
+

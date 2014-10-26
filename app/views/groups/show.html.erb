@@ -1,2 +1,24 @@
-<h1>Groups#show</h1>
-<p>Find me in app/views/groups/show.html.erb</p>
+<% provide(:title, @group.name) %>
+<div class="container">
+	<div class="row">
+		<div class="hidden-xs hidden-sm">
+		<%= render 'layouts/actions_side_nav' %>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-8">
+			<h3><%= @group.name %></h3>
+			<% if @group.members.any? %>
+			<div class="clearfix">
+				<%= will_paginate @members, class: "pull-right" %>
+			</div>
+			<ul class="employees-list">
+			<% @members.each do |member| %>
+				<%= render 'employees/employee', employee: member %>
+			<% end %>
+			</ul>
+			<div class="clearfix">
+				<%= will_paginate @members, class: "pull-right" %>
+			</div>
+			<% end %>
+		</div>
+	</div>
+</div>
