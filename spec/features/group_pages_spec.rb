@@ -94,4 +94,18 @@ RSpec.feature "GroupPages", :type => :feature do
 
 	end
 
+	feature "Visit Group#edit page as an admin" do
+		let(:admin) { FactoryGirl.create(:admin) }
+		let(:group) { FactoryGirl.create(:group) }
+		before do
+			log_in admin
+			visit edit_group_path(group)
+		end
+
+		it { should have_title(full_title("Edit #{group.name}")) }
+		it { should have_content("Name") }
+		it { should have_submit_button("Update") }
+
+	end
+
 end

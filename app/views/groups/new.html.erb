@@ -5,11 +5,7 @@
 		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-0">
 			<h3>New Group</h3>
 			<%= form_for(@group) do |f|%>
-				<%= render 'shared/error_messages_template', model: @group %>
-				<div class="form-group">
-					<%= f.label :name, class: "control-label" %>
-					<%= f.text_field :name, class: "form-control" %>
-				</div>
+				<%= render 'group_form', f: f %>
 				<%= f.submit "Create a new group", class: "btn btn-primary" %>
 			<% end %>
 		</div>

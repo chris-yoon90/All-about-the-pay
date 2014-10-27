@@ -1,2 +1,13 @@
-<h1>Groups#edit</h1>
-<p>Find me in app/views/groups/edit.html.erb</p>
+<% provide(:title, "Edit #{@group.name}") %>
+<div class="container">
+	<div class="row">
+		<%= render 'layouts/actions_side_nav' %>
+		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-0">
+			<h3>New Group</h3>
+			<%= form_for(@group) do |f|%>
+				<%= render 'group_form', f: f %>
+				<%= f.submit "Update", class: "btn btn-primary" %>
+			<% end %>
+		</div>
+	</div>
+</div>
