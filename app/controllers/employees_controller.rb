@@ -31,8 +31,8 @@ class EmployeesController < ApplicationController
 
 	def update
 		new_password = generate_password #Should send it to the user automatically
-		if @employee.update(employee_params_update(new_password))
-			flash[:success] = "Information of #{@employee.name} is updated successfully!"
+		if @employee.update_attributes(employee_params_update(new_password))
+			flash[:success] = "Update is successful!"
 			redirect_to @employee
 		else
 			render 'edit'
@@ -64,8 +64,12 @@ class EmployeesController < ApplicationController
 			return params.require(:employee).permit(:password, :password_confirmation)
 		end
 
-		def generate_password
-			SecureRandom.urlsafe_base64
+		def generate_password(length = 10)
+			temp_string = SecureRandom.urlsafe_base64(length)
+			unless temp_string.match(Employee::VALID_PASSWORD_REGEX)
+				return generate_password(length)
+			end
+			return temp_string
 		end
 
 		def only_site_admin_can_create_and_destroy_users

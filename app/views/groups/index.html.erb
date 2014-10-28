@@ -9,14 +9,8 @@
 				<%= will_paginate @groups, class: "pull-right" %>
 			</div>
 			<h3>Group Index</h1>
-				<ul>
-				<% @groups.each do |group| %>
-					<li>
-						<%= link_to group.name, group_path(group) %>
-						| <%= link_to 'edit', edit_group_path(group) %>
-						| <%= link_to 'delete', group_path(group) %>
-					</li>
-				<% end %>
+				<ul class="model-list">
+				<%= render @groups %>
 				</ul>
 			<div class="clearfix">
 				<%= will_paginate @groups, class: "pull-right" %>

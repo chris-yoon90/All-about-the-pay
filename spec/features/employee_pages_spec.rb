@@ -13,6 +13,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 			end
 
 			it { should have_content "Employee Index" }
+			it { should have_title(full_title("Employees")) }
 			it { should have_link('Create New Employee', href: new_employee_path) }
 			it { should_not have_link('delete', href: employee_path(admin)) }
 			it "should list 10 users on the first page" do
@@ -214,13 +215,14 @@ RSpec.feature "EmployeePages", :type => :feature do
 				it { should have_content("Position") }
 
 				feature "Update the other user's information" do
-					let(:new_name) { "This Employee got promoted" }
+					let(:new_name) { "New Name" }
+					let(:password) { employee.password }
 					before do
 						fill_in "Name", with: new_name
 						click_button "Update"
 					end
 
-					specify { expect(employee.reload.authenticate(employee.password)).to be_falsey }
+					it { expect(employee.reload.authenticate(password)).to be_falsey }
 					it { expect(employee.reload.name).to eq new_name }
 					it { should have_title(full_title(new_name)) }
 					it { should_not have_error_message("error") }

@@ -2,19 +2,19 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-xs-5 col-sm-5 col-md-4">
-				<%= image_tag "http://placehold.it/100x100",alt: employee.name, class: "employee-image" %>
+				<%= image_tag "http://placehold.it/100x100",alt: employee.name, class: "model-image" %>
 			</div>
 
 			<div class="col-xs-7 col-sm-7 col-md-8">
-				<ul class="employee-control">
-					<li class="employee-name"><%= link_to employee.name, employee_path(employee) %></li>
-					<li class="position"><%= employee.position %></li>
+				<ul class="model-control">
+					<li class="model-name"><%= link_to employee.name, employee_path(employee) %></li>
+					<li class="model-info"><%= employee.position %></li>
 					<% if employee.groups.pluck(:name).any? %>
-					<li class="group-membership hidden-xs"><strong>Membership:</strong> <%= employee.groups.pluck(:name).join(', ') %></li>
+					<li class="model-info hidden-xs"><strong>Membership:</strong> <%= employee.groups.pluck(:name).join(', ') %></li>
 					<% end %>
 					<% if current_user.isAdmin? %>
 					<li>
-						<ul class="employee-inner-control">
+						<ul class="model-inner-control">
 							<li><%= link_to "edit", edit_employee_path(employee) %></li>
 							<% unless current_user?(employee) %>
 							<li><%= link_to("delete", employee_path(employee), method: :delete) %></li>

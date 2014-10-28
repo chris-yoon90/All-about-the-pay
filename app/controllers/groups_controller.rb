@@ -12,6 +12,16 @@ class GroupsController < ApplicationController
   	@group = Group.find(params[:id])
   end
 
+  def update
+  	@group = Group.find(params[:id])
+  	if @group.update_attributes(group_params)
+  		flash[:success] = "Update is successful!"
+  		redirect_to @group
+  	else
+  		render 'edit'
+  	end
+  end
+
   def new
   	@group = Group.new
   end
@@ -24,6 +34,13 @@ class GroupsController < ApplicationController
   	else
   		render 'new'
   	end
+  end
+
+  def destroy
+  	group = Group.find(params[:id])
+  	deleted_group = group.destroy
+  	flash[:success] = "Group '#{deleted_group.name}' has been deleted."
+  	redirect_to groups_path
   end
 
   private

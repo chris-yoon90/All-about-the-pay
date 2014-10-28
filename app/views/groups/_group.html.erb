@@ -1,0 +1,30 @@
+<li class="list-item"> 
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-5 col-sm-5 col-md-4">
+				<span class="model-name"><%= link_to group.name, group_path(group) %></span>
+			</div>
+
+			<div class="col-xs-7 col-sm-7 col-md-8">
+				<ul class="model-control">
+					<li class="model-info-lg">
+					<% if group.owner %>
+						Group Owner: <%= link_to group.owner.name, employee_path(group.owner) %>
+					<% else %>
+						No Owner
+					<% end %>
+					</li>
+					<li class="model-info"><%= pluralize(group.members.count, 'member') %></li>
+					<li>
+						<ul class="model-inner-control">
+							<li><%= link_to "edit", edit_group_path(group) %></li>
+							<% unless current_user?(group) %>
+							<li><%= link_to("delete", group_path(group), method: :delete) %></li>
+							<% end %>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>	
+	</div>
+</li>

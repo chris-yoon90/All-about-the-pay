@@ -64,6 +64,7 @@ RSpec.feature "GroupPages", :type => :feature do
 			visit group_path(group)
 		end
 
+		it { should have_title(full_title(group.name)) }
 		it { should have_content(group.name) }
 		it "shows all group members" do
 			group.members.paginate(page: 1).each do |member|
@@ -84,11 +85,22 @@ RSpec.feature "GroupPages", :type => :feature do
 		end
 
 		it { should have_content "Group Index" }
+		it { should have_title(full_title("Groups")) }
 		it "shows all groups" do
 			Group.paginate(page: 1).each do |group|
 				should have_link group.name, href: group_path(group)
 				should have_link 'edit', href: edit_group_path(group)
 				should have_link 'delete', href: group_path(group)
+				should have_text "#{group.members.count} #{'member'.pluralize(group.members.count)}"
+			end
+		end
+
+		feature "Click delete link" do
+			it { expect { click_link('delete', match: :first) }.to change(Group, :count).by(-1) }
+			feature "Success message is shown" do
+				before { click_link('delete', match: :first) }
+				it { should have_success_message("deleted") }
+				it { should have_title(full_title("Groups")) }
 			end
 		end
 
@@ -105,6 +117,31 @@ RSpec.feature "GroupPages", :type => :feature do
 		it { should have_title(full_title("Edit #{group.name}")) }
 		it { should have_content("Name") }
 		it { should have_submit_button("Update") }
+
+		feature "Update with invalid information" do
+			let(:name) { group.name }
+			before do
+				fill_in "Name", with: " "
+				click_button "Update"
+			end
+
+			it { should have_error_message("error") }
+			it { should have_title(full_title("Edit")) }
+			it { expect(group.reload.name).to eq name }
+		end
+
+		feature "Update with valid information" do
+			let(:new_name) { "New Name" }
+			before do
+				fill_in "Name", with: new_name
+				click_button "Update"
+			end
+
+			it { expect(group.reload.name).to eq new_name }
+			it { have_title(full_title(new_name)) }
+			it { have_text(new_name) }
+
+		end
 
 	end
 
