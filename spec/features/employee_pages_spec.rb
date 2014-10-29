@@ -216,7 +216,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 
 				feature "Update the other user's information" do
 					let(:new_name) { "New Name" }
-					let(:password) { employee.password }
+					let!(:password) { employee.password }
 					before do
 						fill_in "Name", with: new_name
 						click_button "Update"

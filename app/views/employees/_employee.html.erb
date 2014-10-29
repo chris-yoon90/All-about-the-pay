@@ -16,8 +16,14 @@
 					<li>
 						<ul class="model-inner-control">
 							<li><%= link_to "edit", edit_employee_path(employee) %></li>
-							<% unless current_user?(employee) %>
-							<li><%= link_to("delete", employee_path(employee), method: :delete) %></li>
+							<% if controller_name == "groups" %>
+								<li>
+									<%= link_to("remove from group", group_membership_path(@group.group_memberships.find_by(employee_id: employee.id)), method: :delete) %>
+								</li>
+							<% else %>
+								<% unless current_user?(employee) %>
+								<li><%= link_to("delete", employee_path(employee), method: :delete) %></li>
+								<% end %>
 							<% end %>
 						</ul>
 					</li>

@@ -66,12 +66,45 @@ RSpec.feature "GroupPages", :type => :feature do
 
 		it { should have_title(full_title(group.name)) }
 		it { should have_content(group.name) }
+		it { should have_content("No Owner") }
+
+		feature "Shows group owner if it exists" do
+			let(:group_owner) { FactoryGirl.create(:employee) }
+			before do
+				group.accept_owner!(group_owner)
+				visit group_path(group)
+			end
+
+			it { should have_link(group_owner.name, href: employee_path(group_owner)) }
+			it { should have_link('edit', href: edit_employee_path(group_owner)) }
+			it { should have_link('remove ownership', href: group_ownership_path(group.group_ownership)) }
+			it { should have_content(group_owner.position)}
+			it { should have_content("Group Owner") }
+
+			feature "Click 'remove ownerhip' to remove the owner from the group" do
+				before { click_link "remove ownership" }
+
+				it { expect(group.owner).to be_nil }
+			end
+
+		end
+
 		it "shows all group members" do
 			group.members.paginate(page: 1).each do |member|
 				should have_link(member.name, href: employee_path(member)) 
 				should have_link('edit', href: edit_employee_path(member)) 
+				should have_link('remove from group', href: group_membership_path(group.group_memberships.find_by(employee_id: member.id)))
 				should have_content(member.position)
 			end
+		end
+
+		feature "Remove a member from the group" do
+			let!(:member_count) { group.members.count }
+
+			before { click_link "remove from group", match: :first }
+
+			it { expect(group.members.count).to eq member_count-1 }
+
 		end
 
 	end

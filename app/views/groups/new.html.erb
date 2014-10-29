@@ -3,7 +3,7 @@
 	<div class="row">
 		<%= render 'layouts/actions_side_nav' %>
 		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-0">
-			<h3>New Group</h3>
+			<h2>New Group</h2>
 			<%= form_for(@group) do |f|%>
 				<%= render 'shared/group_form', f: f %>
 				<%= f.submit "Create a new group", class: "btn btn-primary" %>

@@ -1,0 +1,25 @@
+<div class="owner-container"> 
+	<div class="container-fluid">
+		<h3>Group Owner</h3>
+		<div class="row">
+			<div class="col-xs-5 col-sm-5 col-md-4">
+				<%= image_tag "http://placehold.it/100x100",alt: owner.name, class: "model-image" %>
+			</div>
+
+			<div class="col-xs-7 col-sm-7 col-md-8">
+				<ul class="model-control">
+					<li class="model-name"><%= link_to owner.name, employee_path(owner) %></li>
+					<li class="model-info-lg"><%= owner.position %></li>
+					<% if current_user.isAdmin? %>
+					<li> 
+						<ul class="model-inner-control"> 
+							<li><%= link_to "edit", edit_employee_path(owner) %></li>
+							<li><%= link_to "remove ownership", group_ownership_path(@group.group_ownership), method: :delete %></li>
+						</ul>
+					</li>
+					<% end %>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

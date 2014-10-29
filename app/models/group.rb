@@ -13,7 +13,7 @@ class Group < ActiveRecord::Base
 	end
 
 	def reject_member!(employee)
-		self.group_memberships.find(employee.id).destroy!
+		self.group_memberships.find_by(employee_id: employee.id).destroy!
 	end
 
 	def accept_owner!(owner)

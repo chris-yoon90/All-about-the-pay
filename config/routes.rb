@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  
   root 'static_pages#home'
   get 'help' => 'static_pages#help'
   get 'login' => 'sessions#new'
@@ -8,5 +7,7 @@ Rails.application.routes.draw do
   resources :employees
   resources :groups
   resources :sessions, only: [ :new, :create, :destroy ]
+  resources :group_memberships, only: [ :create, :destroy ]
+  resources :group_ownerships, only: [ :create, :destroy ]
 
 end
