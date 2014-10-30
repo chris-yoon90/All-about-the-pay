@@ -27,6 +27,7 @@ RSpec.describe Employee, :type => :model do
       employees[5..9].each { |member| group2.accept_member!(member) }
     end
 
+    it { expect(employee.is_group_owner?).to be_truthy }
     it { expect(employee.subordinates.count).to eq 10 }
 
   end

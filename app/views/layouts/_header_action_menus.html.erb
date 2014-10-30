@@ -3,6 +3,7 @@
       Actions <span class="caret"></span>
     </a>
     <ul class="dropdown-menu" role="menu">
+        <% if current_user.isAdmin? %>
         <li role="presentation" class="dropdown-header">Employees</li>
         <li><%= link_to 'Employee Index', employees_path %></li>
         <li><%= link_to 'Create New Employee', new_employee_path %></li>
@@ -10,5 +11,10 @@
         <li role="presentation" class="dropdown-header">Groups</li>
         <li><%= link_to 'Group Index', groups_path %></li>
         <li><%= link_to 'Create New Group', new_group_path %></li>
+        <% elsif current_user.is_group_owner? %>
+        <li><%= link_to 'Subordinates', subordinates_employee_path(current_user) %></li>
+        <li class="divider"></li>
+        <li><%= link_to 'Your Groups', "#" %></li>
+        <% end %>
     </ul>
 </li>

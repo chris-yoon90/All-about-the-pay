@@ -1,0 +1,20 @@
+<% provide(:title, "Subordinates") %>
+<div class="container">
+	<div class="row">
+		<div class="hidden-xs hidden-sm">
+		<%= render 'layouts/actions_side_nav' %>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-8">
+			<h2>Subordinates of <%= @user.name %></h2>
+			<div class="clearfix">
+				<%= will_paginate @employees, class: "pull-right" %>
+			</div>
+			<ul class="model-list">
+			<%= render @employees %>
+			</ul>
+			<div class="clearfix">
+				<%= will_paginate @employees, class: "pull-right" %>
+			</div>
+		</div>
+	</div>
+</div>

@@ -5,10 +5,8 @@
 				<%= link_to "PayMeNow", root_path, class: "header-brand"%>
 				<ul class="nav nav-pills">
 				<% if logged_in? %>
-					<% if current_user.isAdmin? %>
-						<%= render 'layouts/header_admin_menus' %>
-					<% else %>
-						<%= render 'layouts/header_non_admin_menus' %>
+					<% if current_user.isAdmin? || current_user.is_group_owner? %>
+						<%= render 'layouts/header_action_menus' %>
 					<% end %>
 					<%= render 'layouts/header_account_dropdown_menu' %>
 				<% else %>

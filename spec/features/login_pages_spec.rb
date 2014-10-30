@@ -48,8 +48,8 @@ RSpec.feature "LoginPages", :type => :feature do
     			
     			it { should have_title(full_title(valid_employee.name)) }
     			it_should_behave_like "Header after login"
-          it { should_not have_link "Employees" }
-          it { should_not have_link "Group Index" }
+          it { should_not have_link "Subordinates" }
+          it { should_not have_link "Your Groups" }
 
           feature "If the user has subordinates" do
             let(:group) { FactoryGirl.create(:group) }
@@ -60,8 +60,8 @@ RSpec.feature "LoginPages", :type => :feature do
               visit root_path #to refresh the page
             end
 
-            it { should have_link "Employees", href: employees_path }
-            it { should_not have_link "Group Index" }
+            it { should have_link "Subordinates", href: subordinates_employee_path(valid_employee) }
+            it { should have_link "Your Groups" }
 
           end
 

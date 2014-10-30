@@ -35,32 +35,26 @@ RSpec.feature "EmployeePages", :type => :feature do
 
 		end
 
-		feature "As a non admin user but a group owner" do
-			let(:user) { FactoryGirl.create(:employee) }
-			let(:group1) { FactoryGirl.create(:group) }
-			let(:group2) { FactoryGirl.create(:group) }
-			before do
-				group1.accept_owner!(user)
-				group2.accept_owner!(user)
-				10.times { group1.accept_member!(FactoryGirl.create(:employee)) }
-				10.times { group2.accept_member!(FactoryGirl.create(:employee)) }
-				log_in user
-				visit employees_path
-			end
+	end
 
-			it { should have_text "Employee Index" }
-			it { should_not have_link('Create new employee') }
-
-			it "should list all subordinates" do
-				user.subordinates.paginate(page: 1).each do |item|
-					should have_link(item.name, href: employee_path(item)) 
-					should_not have_link('edit', href: edit_employee_path(item))
-					should_not have_link('delete', href: employee_path(item)) 
-				end
-			end
-
+	feature "Visit Employee#subordinates page as a group owner" do
+		let(:group_owner) { FactoryGirl.create(:employee) }
+		let(:group) { FactoryGirl.create(:group) }
+		before do
+			group.accept_owner!(group_owner)
+			20.times { group.accept_member!(FactoryGirl.create(:employee)) }
+			log_in group_owner
+			visit subordinates_employee_path(group_owner)
 		end
 
+		it { should have_text "Subordinates of #{group_owner.name}" }
+		it "should list all subordinates" do
+			group_owner.subordinates.paginate(page: 1).each do |subordinate|
+				should have_link(subordinate.name, href: employee_path(subordinate)) 
+				should_not have_link('edit', href: edit_employee_path(subordinate))
+				should_not have_link('delete', href: employee_path(subordinate)) 
+			end
+		end
 	end
 
 	feature "Visit Employee#new page as an admin user" do

@@ -37,6 +37,11 @@ RSpec.describe "AuthenticationRequests", :type => :request do
 			specify { expect(response).to redirect_to(login_path) }
 		end
 
+		describe "Send GET request to Employee#subordinates" do
+			before { get subordinates_employee_path(1) }
+			specify { expect(response).to redirect_to(login_path) }
+		end
+
 	end
 
 	describe "As a non-admin user" do
@@ -101,6 +106,23 @@ RSpec.describe "AuthenticationRequests", :type => :request do
 			specify { expect(employee.reload.email).to_not eq new_email }
 			specify { expect(employee.reload.position).to_not eq new_position }
 			specify { expect(employee.reload.isAdmin?).to be_falsey }
+		end
+
+		describe "Send GET request to Employee#subordinates as a non-group-owner" do
+			before { get subordinates_employee_path(employee) }
+			specify { expect(response).to redirect_to(employee_path(employee)) }
+		end
+
+		describe "Send GET request to Employee#suborinates of other group-owner as a group-owner" do
+			let(:other_group_owner) { FactoryGirl.create(:employee) }
+			let(:group) { FactoryGirl.create(:group) }
+			let(:other_group) { FactoryGirl.create(:group) }
+			before do
+				group.accept_owner!(employee)
+				other_group.accept_owner!(other_group_owner)
+				get subordinates_employee_path(other_group_owner)
+			end
+			specify { expect(response).to redirect_to(employee_path(employee)) }
 		end
 
 	end

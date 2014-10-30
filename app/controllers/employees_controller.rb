@@ -1,11 +1,12 @@
 class EmployeesController < ApplicationController
 	before_action :non_logged_in_user_must_log_in
-	before_action :only_site_admin_can_create_and_destroy_users, only: [ :new, :create, :destroy ]
+	before_action :only_site_admin_can_access, only: [ :index, :new, :create, :destroy ]
 	before_action :only_site_admin_can_update_other_users, only: [ :edit, :update ]
-	before_action :only_site_admin_or_group_owner_can_access_group_member_page, only: [ :show ]
-	before_action :only_site_admin_or_group_owner_can_access_user_index, only: [ :index ]
+	before_action :only_site_admin_or_group_owner_can_access, only: [ :show ]
+	before_action :only_group_owner_can_access_its_own_subordinates_page, only: [ :subordinates ]
 
 	def index
+		@employees = Employee.paginate(page: params[:page])
 	end
 
 	def show
@@ -48,6 +49,11 @@ class EmployeesController < ApplicationController
 		redirect_to employees_path
 	end
 
+	def subordinates
+		@employees = @user.subordinates.paginate(page: params[:page])
+		render 'show_subordinates'
+	end
+
 	private
 		def employee_params(password)
 			params_for_employee = params.require(:employee)
@@ -72,7 +78,7 @@ class EmployeesController < ApplicationController
 			return temp_string
 		end
 
-		def only_site_admin_can_create_and_destroy_users
+		def only_site_admin_can_access
 			unless current_user.isAdmin?
 				redirect_to current_user
 			end
@@ -85,24 +91,16 @@ class EmployeesController < ApplicationController
 			end
 		end
 
-		def only_site_admin_or_group_owner_can_access_group_member_page
+		def only_site_admin_or_group_owner_can_access
 			@employee = Employee.find(params[:id])
-			unless current_user.isAdmin? || current_user?(@employee)
-				owned_groups = current_user.owned_groups
-				isMember =false;
-				owned_groups.each do |group|
-					isMember = true if @employee.member?(group)
-				end
-				redirect_to current_user unless isMember
+			unless current_user.isAdmin? || current_user?(@employee) || current_user.subordinates.include?(@employee)
+				redirect_to current_user
 			end
 		end
 
-		def only_site_admin_or_group_owner_can_access_user_index
-			if current_user.isAdmin?
-				@employees = Employee.all.paginate(page: params[:page])
-			elsif current_user.owned_groups.any?
-				@employees = current_user.subordinates.paginate(page: params[:page])
-			else
+		def only_group_owner_can_access_its_own_subordinates_page
+			@user = Employee.find(params[:id])
+			unless current_user?(@user) && @user.is_group_owner?
 				redirect_to current_user
 			end
 		end

@@ -65,10 +65,13 @@ class Employee < ActiveRecord::Base
 		self.group_ownerships.find_by(group_id: group.id)
 	end
 
+	def is_group_owner?
+		self.group_ownerships.any?
+	end
+
 	def subordinates
 		owned_group_id_list = self.owned_groups.pluck(:id)
 		employee_id_list = GroupMembership.where(group_id: owned_group_id_list).pluck(:employee_id).uniq
 		Employee.where(id: employee_id_list)
 	end
-
 end
