@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
   before_action :non_logged_in_user_must_log_in
-  before_filter :only_admin_user_can_access
+  before_filter :only_admin_user_can_access, except: [ :show ]
+  before_filter :only_admin_user_or_group_owner_can_access, only: [ :show ]
 
   def index
   	@groups = Group.paginate(page: params[:page])
@@ -53,6 +54,13 @@ class GroupsController < ApplicationController
 
     def only_admin_user_can_access
       unless current_user.isAdmin?
+        redirect_to current_user
+      end
+    end
+
+    def only_admin_user_or_group_owner_can_access
+      @group = Group.find(params[:id])
+      unless current_user.isAdmin? || current_user.owner?(@group)
         redirect_to current_user
       end
     end

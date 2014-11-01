@@ -165,8 +165,9 @@ RSpec.describe "AuthenticationRequests", :type => :request do
 			specify { expect(response).to redirect_to(employee_path(employee)) }
 		end
 
-		describe "Send GET request to Group#show" do
-			before { get group_path(1) }
+		describe "Send GET request to Group#show as a non-group owner" do
+			let(:group) { FactoryGirl.create(:group) }
+			before { get group_path(group) }
 			specify { expect(response).to redirect_to(employee_path(employee)) }
 		end
 
