@@ -1,4 +1,7 @@
 class GroupsController < ApplicationController
+  before_action :non_logged_in_user_must_log_in
+  before_filter :only_admin_user_can_access
+
   def index
   	@groups = Group.paginate(page: params[:page])
   end
@@ -47,5 +50,11 @@ class GroupsController < ApplicationController
   	def group_params
   		params.require(:group).permit(:name)
   	end
+
+    def only_admin_user_can_access
+      unless current_user.isAdmin?
+        redirect_to current_user
+      end
+    end
 
 end

@@ -42,6 +42,41 @@ RSpec.describe "AuthenticationRequests", :type => :request do
 			specify { expect(response).to redirect_to(login_path) }
 		end
 
+		describe "Send GET request to Group#index" do
+			before { get groups_path }
+			specify { expect(response).to redirect_to(login_path) }
+		end
+
+		describe "Send GET request to Group#show" do
+			before { get group_path(1) }
+			specify { expect(response).to redirect_to(login_path) }
+		end
+
+		describe "Send GET request to Group#new" do
+			before { get new_group_path }
+			specify { expect(response).to redirect_to(login_path) }
+		end
+
+		describe 'Send GET request to Group#edit' do
+			before { get edit_group_path(1) }
+			specify { expect(response).to redirect_to(login_path) }
+		end
+
+		describe 'Send POST request to Group#create' do
+			before { post groups_path }
+			specify { expect(response).to redirect_to(login_path) }
+		end
+
+		describe 'Send PUT/PATCH request to Group#update' do
+			before { patch group_path(1) }
+			specify { expect(response).to redirect_to(login_path) }
+		end
+
+		describe 'Send DELETE request to Group#destroy' do
+			before { delete group_path(1) }
+			specify { expect(response).to redirect_to(login_path) }
+		end
+
 	end
 
 	describe "As a non-admin user" do
@@ -122,6 +157,41 @@ RSpec.describe "AuthenticationRequests", :type => :request do
 				other_group.accept_owner!(other_group_owner)
 				get subordinates_employee_path(other_group_owner)
 			end
+			specify { expect(response).to redirect_to(employee_path(employee)) }
+		end
+
+		describe "Send GET request to Group#index" do
+			before { get groups_path }
+			specify { expect(response).to redirect_to(employee_path(employee)) }
+		end
+
+		describe "Send GET request to Group#show" do
+			before { get group_path(1) }
+			specify { expect(response).to redirect_to(employee_path(employee)) }
+		end
+
+		describe "Send GET request to Group#new" do
+			before { get new_group_path }
+			specify { expect(response).to redirect_to(employee_path(employee)) }
+		end
+
+		describe 'Send GET request to Group#edit' do
+			before { get edit_group_path(1) }
+			specify { expect(response).to redirect_to(employee_path(employee)) }
+		end
+
+		describe 'Send POST request to Group#create' do
+			before { post groups_path }
+			specify { expect(response).to redirect_to(employee_path(employee)) }
+		end
+
+		describe 'Send PUT/PATCH request to Group#update' do
+			before { patch group_path(1) }
+			specify { expect(response).to redirect_to(employee_path(employee)) }
+		end
+
+		describe 'Send DELETE request to Group#destroy' do
+			before { delete group_path(1) }
 			specify { expect(response).to redirect_to(employee_path(employee)) }
 		end
 
