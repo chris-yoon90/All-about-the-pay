@@ -1,0 +1,29 @@
+<li class="list-item"> 
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-5 col-sm-5 col-md-4">
+				<%= image_tag "http://placehold.it/100x100",alt: member.name, class: "model-image" %>
+			</div>
+
+			<div class="col-xs-7 col-sm-7 col-md-8">
+				<ul class="model-control">
+					<li class="model-name"><%= link_to member.name, employee_path(member) %></li>
+					<li class="model-info"><%= member.position %></li>
+					<% if member.groups.pluck(:name).any? %>
+					<li class="model-info hidden-xs"><strong>Membership:</strong> <%= member.groups.pluck(:name).join(', ') %></li>
+					<% end %>
+					<% if current_user.isAdmin? %>
+					<li>
+						<ul class="model-inner-control">
+							<li><%= link_to "edit", edit_employee_path(member) %></li>
+							<li>
+								<%= link_to("remove from group", group_membership_path(@group.group_memberships.find_by(employee_id: member.id)), method: :delete) %>
+							</li>
+						</ul>
+					</li>
+					<% end %>
+				</ul>
+			</div>
+		</div>	
+	</div>
+</li>

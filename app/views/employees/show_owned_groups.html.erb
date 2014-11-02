@@ -1,22 +1,16 @@
 <% provide(:title, "Owned Groups") %>
-<div class="container">
-	<div class="row">
-		<div class="hidden-xs hidden-sm">
-		<%= render 'layouts/actions_side_nav' %>
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-8">
-			<h2>Groups of <%= @user.name %></h2>
-			<div class="clearfix">
-				<%= will_paginate @owned_groups, class: "pull-right" %>
-			</div>
-			<ul class="model-list">
-			<% @owned_groups.each do |group| %>
-				<%= render 'groups/group', group: group %>
-			<% end %>
-			</ul>
-			<div class="clearfix">
-				<%= will_paginate @owned_groups, class: "pull-right" %>
-			</div>
-		</div>
+
+<div class="col-xs-12 col-sm-12 col-md-8">
+	<h2>Groups of <%= @user.name %></h2>
+	<div class="clearfix">
+		<%= will_paginate @owned_groups, class: "pull-right" %>
+	</div>
+	<ul class="model-list">
+	<% @owned_groups.each do |group| %>
+		<%= render 'groups/group', group: group %>
+	<% end %>
+	</ul>
+	<div class="clearfix">
+		<%= will_paginate @owned_groups, class: "pull-right" %>
 	</div>
 </div>

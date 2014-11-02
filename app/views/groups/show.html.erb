@@ -1,31 +1,26 @@
 <% provide(:title, @group.name) %>
-<div class="container">
-	<div class="row">
-		<div class="hidden-xs hidden-sm">
-		<%= render 'layouts/actions_side_nav' %>
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-8">
-			<h2><%= @group.name %></h2>
-			<% if @group.owner %>
-			<%= render 'owner', owner: @group.owner %>
-			<% else %>
-			<h3>No Owner</h3>
-			<% end %>
-			<% if @group.members.any? %>
-			<div class="clearfix">
-				<%= will_paginate @members, class: "pull-right" %>
-			</div>
-			<ul class="model-list">
-			<% @members.each do |member| %>
-				<%= render 'employees/employee', employee: member %>
-			<% end %>
-			</ul>
-			<div class="clearfix">
-				<%= will_paginate @members, class: "pull-right" %>
-			</div>
-			<% else %>
-			<h3>There are no members in this group. Please add members.</h3>
-			<% end %>
-		</div>
+
+<div class="col-xs-12 col-sm-12 col-md-8">
+	<h2><%= @group.name %></h2>
+	<% if @group.owner %>
+	<%= render 'owner', owner: @group.owner %>
+	<% else %>
+	<h3>No Owner</h3>
+	<% end %>
+	<% if @group.members.any? %>
+	<div class="clearfix">
+		<%= will_paginate @members, class: "pull-right" %>
 	</div>
+	<ul class="model-list">
+	<% @members.each do |member| %>
+	<%= render 'member', member: member %>
+	<% end %>
+	</ul>
+	<div class="clearfix">
+		<%= will_paginate @members, class: "pull-right" %>
+	</div>
+	<% else %>
+	<h3>There are no members in this group. Please add members.</h3>
+	<% end %>
 </div>
+

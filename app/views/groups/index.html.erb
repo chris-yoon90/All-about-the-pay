@@ -1,21 +1,15 @@
 <% provide(:title, 'Groups') %>
-<div class="container">
-	<div class="row">
-		<div class="hidden-xs hidden-sm">
-		<%= render 'layouts/actions_side_nav' %>
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-8">
-			<h2>Group Index</h2>
-			<div class="clearfix">
-				<%= will_paginate @groups, class: "pull-right" %>
-			</div>
-			<ul class="model-list">
-			<%= render @groups %>
-			</ul>
-			<div class="clearfix">
-				<%= will_paginate @groups, class: "pull-right" %>
-			</div>
-		</h3>
+
+<div class="col-xs-12 col-sm-12 col-md-8">
+	<h2>Group Index</h2>
+	<div class="clearfix">
+		<%= will_paginate @groups, class: "pull-right" %>
+	</div>
+	<ul class="model-list">
+	<%= render @groups %>
+	</ul>
+	<div class="clearfix">
+		<%= will_paginate @groups, class: "pull-right" %>
 	</div>
 </div>
 

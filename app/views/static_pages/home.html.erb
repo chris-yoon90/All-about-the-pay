@@ -1,3 +1,6 @@
+<% if logged_in? %>
+	<h2>Home Content</h2>
+<% else %>
 <div class="home-wrapper">
 	<div class="home-wrapper-inner">
 		<h1>Keep track of your hours</h1>
@@ -5,3 +8,4 @@
 		<%= link_to "Tutorial", "#", class: "btn btn-lg btn-default" %>
 	</div>
 </div>
+<% end %>
