@@ -3,7 +3,7 @@ class EmployeesController < ApplicationController
 	before_action :only_site_admin_can_access, only: [ :index, :new, :create, :destroy ]
 	before_action :only_site_admin_can_update_other_users, only: [ :edit, :update ]
 	before_action :only_site_admin_or_group_owner_can_access, only: [ :show ]
-	before_action :only_group_owner_can_access_its_own_subordinates_page, only: [ :subordinates ]
+	before_action :only_group_owner_can_access, only: [ :subordinates, :owned_groups ]
 
 	def index
 		@employees = Employee.paginate(page: params[:page])
@@ -54,6 +54,11 @@ class EmployeesController < ApplicationController
 		render 'show_subordinates'
 	end
 
+	def owned_groups
+		@owned_groups = @user.owned_groups.paginate(page: params[:page])
+		render 'show_owned_groups'
+	end
+
 	private
 		def employee_params(password)
 			params_for_employee = params.require(:employee)
@@ -98,7 +103,7 @@ class EmployeesController < ApplicationController
 			end
 		end
 
-		def only_group_owner_can_access_its_own_subordinates_page
+		def only_group_owner_can_access
 			@user = Employee.find(params[:id])
 			unless current_user?(@user) && @user.is_group_owner?
 				redirect_to current_user

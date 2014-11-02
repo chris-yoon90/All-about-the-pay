@@ -15,6 +15,7 @@
 					<% end %>
 					</li>
 					<li class="model-info"><%= pluralize(group.members.count, 'member') %></li>
+					<% if current_user.isAdmin? %>
 					<li>
 						<ul class="model-inner-control">
 							<li><%= link_to "edit", edit_group_path(group) %></li>
@@ -23,6 +24,7 @@
 							<% end %>
 						</ul>
 					</li>
+					<% end %>
 				</ul>
 			</div>
 		</div>	

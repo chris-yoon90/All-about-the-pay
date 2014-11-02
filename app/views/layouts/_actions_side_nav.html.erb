@@ -13,7 +13,7 @@
 		<li class="action-header">Employees</li>
 		<li><%= link_to "Subordinates", subordinates_employee_path(current_user) %></li>
 		<li class="action-header">Groups</li>
-		<li><%= link_to "Your Groups", "#" %></li>
+		<li><%= link_to "Your Groups", owned_groups_employee_path(current_user) %></li>
 	</ul>
 <% end %>
 </div>

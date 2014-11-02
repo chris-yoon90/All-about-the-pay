@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :employees do
     member do
       get :subordinates
+      get :owned_groups
     end
   end
   resources :groups

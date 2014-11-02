@@ -42,6 +42,11 @@ RSpec.describe "AuthenticationRequests", :type => :request do
 			specify { expect(response).to redirect_to(login_path) }
 		end
 
+		describe "Send GET request to Employee#owned_groups" do
+			before { get owned_groups_employee_path(1) }
+			specify { expect(response).to redirect_to(login_path) }
+		end
+
 		describe "Send GET request to Group#index" do
 			before { get groups_path }
 			specify { expect(response).to redirect_to(login_path) }
@@ -148,6 +153,11 @@ RSpec.describe "AuthenticationRequests", :type => :request do
 			specify { expect(response).to redirect_to(employee_path(employee)) }
 		end
 
+		describe "Send GET request to Employee#owned_groups as a non-group-owner" do
+			before { get owned_groups_employee_path(employee) }
+			specify { expect(response).to redirect_to(employee_path(employee)) }
+		end
+
 		describe "Send GET request to Employee#suborinates of other group-owner as a group-owner" do
 			let(:other_group_owner) { FactoryGirl.create(:employee) }
 			let(:group) { FactoryGirl.create(:group) }
@@ -156,6 +166,18 @@ RSpec.describe "AuthenticationRequests", :type => :request do
 				group.accept_owner!(employee)
 				other_group.accept_owner!(other_group_owner)
 				get subordinates_employee_path(other_group_owner)
+			end
+			specify { expect(response).to redirect_to(employee_path(employee)) }
+		end
+
+		describe "Send GET request to Employee#owned_groups of other group-owner as a group-owner" do
+			let(:other_group_owner) { FactoryGirl.create(:employee) }
+			let(:group) { FactoryGirl.create(:group) }
+			let(:other_group) { FactoryGirl.create(:group) }
+			before do
+				group.accept_owner!(employee)
+				other_group.accept_owner!(other_group_owner)
+				get owned_groups_employee_path(other_group_owner)
 			end
 			specify { expect(response).to redirect_to(employee_path(employee)) }
 		end

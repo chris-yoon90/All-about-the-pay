@@ -57,6 +57,25 @@ RSpec.feature "EmployeePages", :type => :feature do
 		end
 	end
 
+	feature "Visit Employee#owned_groups page as a group owner" do
+		let(:group_owner) { FactoryGirl.create(:employee) }
+		before do
+			20.times { FactoryGirl.create(:group).accept_owner!(group_owner) }
+			log_in group_owner
+			visit owned_groups_employee_path(group_owner)
+		end
+
+		it { should have_content "Groups of #{group_owner.name}" }
+		it { should have_title(full_title("Owned Groups")) }
+		it "shows all groups" do
+			Group.paginate(page: 1).each do |group|
+				should have_link group.name, href: group_path(group)
+				should have_text "#{group.members.count} #{'member'.pluralize(group.members.count)}"
+			end
+		end
+
+	end
+
 	feature "Visit Employee#new page as an admin user" do
 		let(:admin) { FactoryGirl.create(:admin) }
 		before do 

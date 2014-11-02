@@ -14,7 +14,7 @@
         <% elsif current_user.is_group_owner? %>
         <li><%= link_to 'Subordinates', subordinates_employee_path(current_user) %></li>
         <li class="divider"></li>
-        <li><%= link_to 'Your Groups', "#" %></li>
+        <li><%= link_to 'Your Groups', owned_groups_employee_path(current_user) %></li>
         <% end %>
     </ul>
 </li>

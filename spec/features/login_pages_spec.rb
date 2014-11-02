@@ -61,7 +61,7 @@ RSpec.feature "LoginPages", :type => :feature do
             end
 
             it { should have_link "Subordinates", href: subordinates_employee_path(valid_employee) }
-            it { should have_link "Your Groups" }
+            it { should have_link "Your Groups", href: owned_groups_employee_path(valid_employee) }
 
           end
 
