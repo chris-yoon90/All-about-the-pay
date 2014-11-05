@@ -47,6 +47,15 @@ class GroupsController < ApplicationController
   	redirect_to groups_path
   end
 
+  def search_owner
+    @group = Group.find(params[:id])
+    @employees = Employee.paginate(page: params[:page])
+    render 'search_owner'
+  end
+
+  def search_employees
+  end
+
   private
   	def group_params
   		params.require(:group).permit(:name)

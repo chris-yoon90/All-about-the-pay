@@ -5,7 +5,10 @@
 	<% if @group.owner %>
 	<%= render 'owner', owner: @group.owner %>
 	<% else %>
-	<h3>No Owner</h3>
+	<div class="owner-container clearfix">
+		<h3 class="pull-left">No Owner</h3>
+		<%= link_to "Choose an owner", search_owner_group_path(@group), class: "btn btn-primary pull-right" %>
+	</div>
 	<% end %>
 	<% if @group.members.any? %>
 	<div class="clearfix">

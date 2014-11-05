@@ -67,6 +67,7 @@ RSpec.feature "GroupPages", :type => :feature do
 		it { should have_title(full_title(group.name)) }
 		it { should have_content(group.name) }
 		it { should have_content("No Owner") }
+		it { should have_link "Choose an owner", href: search_owner_group_path(group) }
 
 		feature "Shows group owner if it exists" do
 			let(:group_owner) { FactoryGirl.create(:employee) }
@@ -175,6 +176,25 @@ RSpec.feature "GroupPages", :type => :feature do
 			it { have_text(new_name) }
 
 		end
+
+	end
+
+	feature "Visit Groups#search_owner page as an admin" do
+		let(:admin) { FactoryGirl.create(:admin) }
+		let(:group) { FactoryGirl.create(:group) }
+		before do
+			log_in admin
+			visit search_owner_group_path(group)
+		end
+
+		it "Should have a list of all Employees" do
+			Employee.paginate(page: 1).each do |employee|
+				should have_text(employee.name) 
+				should have_text(employee.position)
+			end
+		end
+
+		it { should have_selector('input#search_employees') }
 
 	end
 
