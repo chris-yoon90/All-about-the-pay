@@ -30,9 +30,11 @@
 							<li class="model-info hidden-xs"><strong>Membership:</strong> <%= employee.groups.pluck(:name).join(', ') %></li>
 							<% end %>
 							<li>
-								<ul class="model-inner-control">
-									<li><%= link_to "Choose as an owner", "#" %></li>
-								</ul>
+								<%= form_for(@group.build_group_ownership(employee_id: employee.id), html: {id: "new_group_ownership_#{employee.id}"}) do |f| %>
+									<div><%= f.hidden_field :employee_id %></div>
+									<div><%= f.hidden_field :group_id %></div>
+									<%= f.submit "Choose as an owner", class: "btn btn-link" %>
+								<% end %>
 							</li>
 						</ul>
 					</div>

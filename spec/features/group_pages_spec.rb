@@ -187,14 +187,27 @@ RSpec.feature "GroupPages", :type => :feature do
 			visit search_owner_group_path(group)
 		end
 
+		it { should have_selector('input#search_employees') }
+
 		it "Should have a list of all Employees" do
 			Employee.paginate(page: 1).each do |employee|
 				should have_text(employee.name) 
 				should have_text(employee.position)
+				should have_selector("form#new_group_ownership_#{employee.id}")
 			end
 		end
 
-		it { should have_selector('input#search_employees') }
+		feature "Click 'Choose as an owner' to assign a group ownership to an employee" do
+			before do
+				click_button "Choose as an owner", match: :first
+			end
+
+			it { expect(group.owner.id).to eq admin.id }
+
+			it { should have_title(full_title("#{group.name}")) }
+			it { should have_content(group.name) }
+
+		end
 
 	end
 

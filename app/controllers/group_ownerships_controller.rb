@@ -1,5 +1,9 @@
 class GroupOwnershipsController < ApplicationController
 	def create
+		@owner = Employee.find(params[:group_ownership][:employee_id])
+		@group = Group.find(params[:group_ownership][:group_id])
+		@group.accept_owner!(@owner)
+		redirect_to @group
 	end
 
 	def destroy
