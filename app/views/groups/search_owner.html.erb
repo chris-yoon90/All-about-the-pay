@@ -4,9 +4,9 @@
 	<h2 class="pull-left">Search:</h2>
 	<%= form_tag search_employees_group_path, class: "navbar-form navbar-right" do %>
 	<div class="form-group">
-		<%= text_field_tag :search, nil, id: "search_employees", class: "form-control", placeholder: "Search", role: "search" %>
+		<%= text_field_tag :search, nil, class: "form-control", placeholder: "Search", role: "search" %>
 	</div>
-	<%= submit_tag "Submit", class: "btn btn-default" %>
+	<%= submit_tag "Search", class: "btn btn-default" %>
 	<% end %>
 </div>
 

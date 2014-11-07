@@ -187,14 +187,31 @@ RSpec.feature "GroupPages", :type => :feature do
 			visit search_owner_group_path(group)
 		end
 
-		it { should have_selector('input#search_employees') }
+		it { should have_selector('input#search') }
+		it { should have_button("Search") }
 
 		it "Should have a list of all Employees" do
 			Employee.paginate(page: 1).each do |employee|
-				should have_text(employee.name) 
-				should have_text(employee.position)
+				should have_selector('li.model-name', text: employee.name)
+				should have_selector('li.model-info', text: employee.position)
 				should have_selector("form#new_group_ownership_#{employee.id}")
 			end
+		end
+
+		feature "Admin can search for employees" do
+			let!(:chrisy) { FactoryGirl.create(:employee, name: "Chris Yoon") }
+			let!(:christ) { FactoryGirl.create(:employee, name: "Chris Test") }
+			before do
+				fill_in 'Search', with: "chris"
+				click_button "Search"
+			end
+
+			it "Should only have search results" do
+				should have_selector('li.model-name', text: chrisy.name)
+				should have_selector('li.model-name', text: christ.name)
+				should have_selector('li.list-item', count: 2)
+			end
+
 		end
 
 		feature "Click 'Choose as an owner' to assign a group ownership to an employee" do
