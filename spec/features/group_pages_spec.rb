@@ -228,4 +228,57 @@ RSpec.feature "GroupPages", :type => :feature do
 
 	end
 
+
+
+
+
+	# feature "Visit Groups#search_member page as an admin" do
+	# 	let(:admin) { FactoryGirl.create(:admin) }
+	# 	let(:group) { FactoryGirl.create(:group) }
+	# 	before do
+	# 		log_in admin
+	# 		visit search_member_group_path(group)
+	# 	end
+
+	# 	it { should have_selector('input#search') }
+	# 	it { should have_button("Search") }
+
+	# 	it "Should have a list of all Employees" do
+	# 		Employee.paginate(page: 1).each do |employee|
+	# 			should have_selector('li.model-name', text: employee.name)
+	# 			should have_selector('li.model-info', text: employee.position)
+	# 			should have_selector("form#new_group_ownership_#{employee.id}")
+	# 		end
+	# 	end
+
+	# 	feature "Admin can search for employees" do
+	# 		let!(:chrisy) { FactoryGirl.create(:employee, name: "Chris Yoon") }
+	# 		let!(:christ) { FactoryGirl.create(:employee, name: "Chris Test") }
+	# 		before do
+	# 			fill_in 'Search', with: "chris"
+	# 			click_button "Search"
+	# 		end
+
+	# 		it "Should only have search results" do
+	# 			should have_selector('li.model-name', text: chrisy.name)
+	# 			should have_selector('li.model-name', text: christ.name)
+	# 			should have_selector('li.list-item', count: 2)
+	# 		end
+
+	# 	end
+
+	# 	feature "Click 'Choose as an owner' to assign a group ownership to an employee" do
+	# 		before do
+	# 			click_button "Choose as a member", match: :first
+	# 		end
+
+	# 		it { expect(group.members).to include admin }
+
+	# 		it { should have_title(full_title("#{group.name}")) }
+	# 		it { should have_content(group.name) }
+
+	# 	end
+
+	# end
+
 end

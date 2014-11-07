@@ -1,14 +1,6 @@
 <% provide(:title, "Choose an owner for #{@group.name}") %>
 
-<div class="col-xs-8 col-xs-offset-2 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-0">
-	<h2 class="pull-left">Search:</h2>
-	<%= form_tag search_employees_group_path, class: "navbar-form navbar-right" do %>
-	<div class="form-group">
-		<%= text_field_tag :search, nil, class: "form-control", placeholder: "Search", role: "search" %>
-	</div>
-	<%= submit_tag "Search", class: "btn btn-default" %>
-	<% end %>
-</div>
+<%= render 'search_form' %>
 
 <div class="col-xs-12 col-sm-12 col-md-8">
 	<div class="clearfix">
@@ -30,11 +22,7 @@
 							<li class="model-info hidden-xs"><strong>Membership:</strong> <%= employee.groups.pluck(:name).join(', ') %></li>
 							<% end %>
 							<li>
-								<%= form_for(@group.build_group_ownership(employee_id: employee.id), html: {id: "new_group_ownership_#{employee.id}"}) do |f| %>
-									<div><%= f.hidden_field :employee_id %></div>
-									<div><%= f.hidden_field :group_id %></div>
-									<%= f.submit "Choose as an owner", class: "btn btn-link" %>
-								<% end %>
+								<%= render 'ownership_form', group: @group, employee: employee %>
 							</li>
 						</ul>
 					</div>
