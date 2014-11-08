@@ -44,6 +44,14 @@ class Employee < ActiveRecord::Base
 		BCrypt::Password.create(string, cost: cost)
 	end
 
+	def self.search(search)
+		if search
+			Employee.where("name LIKE ?", "%#{search}%")
+		else
+			Employee.all
+		end
+	end
+
 	def remember
 		self.remember_token = Employee.new_token
 		self.update_attribute(:remember_digest, Employee.digest(self.remember_token))

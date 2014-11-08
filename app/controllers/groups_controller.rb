@@ -55,7 +55,7 @@ class GroupsController < ApplicationController
 
   def search_employees
     @group = Group.find(params[:id])
-    @employees = Employee.where("name LIKE ?", "%#{params[:search]}%").paginate(page: params[:page])
+    @employees = Employee.search(params[:search]).paginate(page: params[:page])
     render 'search_owner'
   end
 

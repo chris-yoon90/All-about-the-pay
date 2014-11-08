@@ -14,6 +14,19 @@ RSpec.describe Employee, :type => :model do
   it { should respond_to :password_confirmation }
   it { should respond_to :isAdmin }
 
+  describe "search" do
+    let!(:employee2) { FactoryGirl.create(:employee, name: "Chris Yoon") }
+    let!(:employee3) { FactoryGirl.create(:employee, name: "Chris Test") }
+    let(:search_result) { Employee.search("Chris") }
+
+    before { employee.save }
+
+    it { expect(search_result).to include employee2 }
+    it { expect(search_result).to include employee3 }
+    it { expect(search_result).to_not include employee }
+
+  end
+
   describe "subordinates" do
     let(:group1) { FactoryGirl.create(:group) }
     let(:group2) { FactoryGirl.create(:group) }
