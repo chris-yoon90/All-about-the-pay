@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   resources :groups do
     member do
       get :search_owner
-      post :search_employees
     end
   end
   resources :sessions, only: [ :new, :create, :destroy ]

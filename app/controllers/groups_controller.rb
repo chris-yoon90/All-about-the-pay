@@ -49,12 +49,6 @@ class GroupsController < ApplicationController
 
   def search_owner
     @group = Group.find(params[:id])
-    @employees = Employee.paginate(page: params[:page])
-    render 'search_owner'
-  end
-
-  def search_employees
-    @group = Group.find(params[:id])
     @employees = Employee.search(params[:search]).paginate(page: params[:page])
     render 'search_owner'
   end

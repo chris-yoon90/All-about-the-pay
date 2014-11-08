@@ -1,0 +1,21 @@
+<li class="list-item"> 
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-5 col-sm-5 col-md-4">
+				<%= image_tag "http://placehold.it/100x100", alt: employee.name, class: "model-image" %>
+			</div>
+			<div class="col-xs-7 col-sm-7 col-md-8">
+				<ul class="model-control">
+					<li class="model-name"><%= link_to employee.name, employee_path(employee) %></li>
+					<li class="model-info"><%= employee.position %></li>
+					<% if employee.groups.pluck(:name).any? %>
+					<li class="model-info hidden-xs"><strong>Membership:</strong> <%= employee.groups.pluck(:name).join(', ') %></li>
+					<% end %>
+					<li>
+						<%= yield %>
+					</li>
+				</ul>
+			</div>
+		</div>	
+	</div>
+</li>
