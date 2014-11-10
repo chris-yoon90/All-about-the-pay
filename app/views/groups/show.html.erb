@@ -10,6 +10,12 @@
 		<%= link_to "Choose an owner", search_owner_group_path(@group), class: "btn btn-primary pull-right" %>
 	</div>
 	<% end %>
+	<div class="clearfix">
+		<% unless @group.members.any? %>
+		<h3 class="pull-left">There are no members in this group. Please add members.</h3>
+		<% end %>
+		<%= link_to "Choose members", search_member_group_path(@group), class: "btn btn-primary pull-right" %>
+	</div>
 	<% if @group.members.any? %>
 	<div class="clearfix">
 		<%= will_paginate @members, class: "pull-right" %>
@@ -22,8 +28,6 @@
 	<div class="clearfix">
 		<%= will_paginate @members, class: "pull-right" %>
 	</div>
-	<% else %>
-	<h3>There are no members in this group. Please add members.</h3>
 	<% end %>
 </div>
 

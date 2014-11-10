@@ -1,5 +1,9 @@
 class GroupMembershipsController < ApplicationController
   def create
+  	@member = Employee.find(params[:group_membership][:employee_id])
+	@group = Group.find(params[:group_membership][:group_id])
+	@group.accept_member!(@member)
+	redirect_to @group
   end
 
   def destroy

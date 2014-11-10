@@ -1,7 +1,7 @@
-<% provide(:title, "Choose an owner for #{@group.name}") %>
+<% provide(:title, "Assign a member to #{@group.name}") %>
 
 <% content_for :search_form do %>
-	<%= form_tag search_owner_group_path, method: :get, class: "navbar-form navbar-right" do %>
+	<%= form_tag search_member_group_path, method: :get, class: "navbar-form navbar-right" do %>
 	<div class="form-group">
 		<%= text_field_tag :search, nil, class: "form-control", placeholder: "Search", role: "search" %>
 	</div>
@@ -10,5 +10,5 @@
 <% end %>
 
 <%= render layout: 'search_layout', locals: { employees: @employees } do %>
-	<%= render partial: 'ownership_form', collection: @employees, as: :employee, locals: { group: @group }, layout: 'employee_item_list_layout' %>
+	<%= render partial: 'membership_form', collection: @employees, as: :employee, locals: { group: @group }, layout: 'employee_item_list_layout' %>
 <% end %>

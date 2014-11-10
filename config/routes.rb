@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :groups do
     member do
       get :search_owner
+      get :search_member
     end
   end
   resources :sessions, only: [ :new, :create, :destroy ]

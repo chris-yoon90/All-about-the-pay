@@ -59,7 +59,6 @@ RSpec.feature "GroupPages", :type => :feature do
 		let(:admin) { FactoryGirl.create(:admin) }
 		let(:group) { FactoryGirl.create(:group) }
 		before do
-			20.times { group.accept_member!(FactoryGirl.create(:employee)) }
 			log_in admin
 			visit group_path(group)
 		end
@@ -68,6 +67,8 @@ RSpec.feature "GroupPages", :type => :feature do
 		it { should have_content(group.name) }
 		it { should have_content("No Owner") }
 		it { should have_link "Choose an owner", href: search_owner_group_path(group) }
+		it { should have_content "There are no members in this group. Please add members." }
+		it { should have_link "Choose members", href: search_member_group_path(group) }
 
 		feature "Shows group owner if it exists" do
 			let(:group_owner) { FactoryGirl.create(:employee) }
@@ -90,24 +91,30 @@ RSpec.feature "GroupPages", :type => :feature do
 
 		end
 
-		it "shows all group members" do
-			group.members.paginate(page: 1).each do |member|
-				should have_link(member.name, href: employee_path(member)) 
-				should have_link('edit', href: edit_employee_path(member)) 
-				should have_link('remove from group', href: group_membership_path(group.group_memberships.find_by(employee_id: member.id)))
-				should have_content(member.position)
+		feature "Shows group owner if it exists" do
+			before do 
+				20.times { group.accept_member!(FactoryGirl.create(:employee)) }
+				visit group_path(group)
+			end
+			
+			it "shows all group members" do
+				group.members.paginate(page: 1).each do |member|
+					should have_link(member.name, href: employee_path(member)) 
+					should have_link('edit', href: edit_employee_path(member)) 
+					should have_link('remove from group', href: group_membership_path(group.group_memberships.find_by(employee_id: member.id)))
+					should have_content(member.position)
+				end
+			end
+
+			feature "Remove a member from the group" do
+				let!(:member_count) { group.members.count }
+
+				before { click_link "remove from group", match: :first }
+
+				it { expect(group.members.count).to eq member_count-1 }
+
 			end
 		end
-
-		feature "Remove a member from the group" do
-			let!(:member_count) { group.members.count }
-
-			before { click_link "remove from group", match: :first }
-
-			it { expect(group.members.count).to eq member_count-1 }
-
-		end
-
 	end
 
 	feature "Visit Group#index page as an admin" do
@@ -228,57 +235,53 @@ RSpec.feature "GroupPages", :type => :feature do
 
 	end
 
+	feature "Visit Groups#search_member page as an admin" do
+		let(:admin) { FactoryGirl.create(:admin) }
+		let(:group) { FactoryGirl.create(:group) }
+		before do
+			log_in admin
+			visit search_member_group_path(group)
+		end
 
+		it { should have_selector('input#search') }
+		it { should have_button("Search") }
 
+		it "Should have a list of all Employees" do
+			Employee.paginate(page: 1).each do |employee|
+				should have_selector('li.model-name', text: employee.name)
+				should have_selector('li.model-info', text: employee.position)
+				should have_selector("form#new_group_membership_#{employee.id}")
+			end
+		end
 
+		feature "Admin can search for employees" do
+			let!(:chrisy) { FactoryGirl.create(:employee, name: "Chris Yoon") }
+			let!(:christ) { FactoryGirl.create(:employee, name: "Chris Test") }
+			before do
+				fill_in 'Search', with: "chris"
+				click_button "Search"
+			end
 
-	# feature "Visit Groups#search_member page as an admin" do
-	# 	let(:admin) { FactoryGirl.create(:admin) }
-	# 	let(:group) { FactoryGirl.create(:group) }
-	# 	before do
-	# 		log_in admin
-	# 		visit search_member_group_path(group)
-	# 	end
+			it "Should only have search results" do
+				should have_selector('li.model-name', text: chrisy.name)
+				should have_selector('li.model-name', text: christ.name)
+				should have_selector('li.list-item', count: 2)
+			end
 
-	# 	it { should have_selector('input#search') }
-	# 	it { should have_button("Search") }
+		end
 
-	# 	it "Should have a list of all Employees" do
-	# 		Employee.paginate(page: 1).each do |employee|
-	# 			should have_selector('li.model-name', text: employee.name)
-	# 			should have_selector('li.model-info', text: employee.position)
-	# 			should have_selector("form#new_group_ownership_#{employee.id}")
-	# 		end
-	# 	end
+		feature "Click 'Choose as an owner' to assign a group ownership to an employee" do
+			before do
+				click_button "Choose as a member", match: :first
+			end
 
-	# 	feature "Admin can search for employees" do
-	# 		let!(:chrisy) { FactoryGirl.create(:employee, name: "Chris Yoon") }
-	# 		let!(:christ) { FactoryGirl.create(:employee, name: "Chris Test") }
-	# 		before do
-	# 			fill_in 'Search', with: "chris"
-	# 			click_button "Search"
-	# 		end
+			it { expect(group.members).to include admin }
 
-	# 		it "Should only have search results" do
-	# 			should have_selector('li.model-name', text: chrisy.name)
-	# 			should have_selector('li.model-name', text: christ.name)
-	# 			should have_selector('li.list-item', count: 2)
-	# 		end
+			it { should have_title(full_title("#{group.name}")) }
+			it { should have_content(group.name) }
 
-	# 	end
+		end
 
-	# 	feature "Click 'Choose as an owner' to assign a group ownership to an employee" do
-	# 		before do
-	# 			click_button "Choose as a member", match: :first
-	# 		end
-
-	# 		it { expect(group.members).to include admin }
-
-	# 		it { should have_title(full_title("#{group.name}")) }
-	# 		it { should have_content(group.name) }
-
-	# 	end
-
-	# end
+	end
 
 end

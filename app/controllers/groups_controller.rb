@@ -1,7 +1,7 @@
 class GroupsController < ApplicationController
   before_action :non_logged_in_user_must_log_in
-  before_filter :only_admin_user_can_access, except: [ :show ]
-  before_filter :only_admin_user_or_group_owner_can_access, only: [ :show ]
+  before_action :only_admin_user_can_access, except: [ :show ]
+  before_action :only_admin_user_or_group_owner_can_access, only: [ :show ]
 
   def index
   	@groups = Group.paginate(page: params[:page])
@@ -49,8 +49,18 @@ class GroupsController < ApplicationController
 
   def search_owner
     @group = Group.find(params[:id])
+    unless @group.owner
+      @employees = Employee.search(params[:search]).paginate(page: params[:page])
+      render 'search_owner'
+    else
+      redirect_to @group
+    end
+  end
+
+  def search_member
+    @group = Group.find(params[:id])
     @employees = Employee.search(params[:search]).paginate(page: params[:page])
-    render 'search_owner'
+    render 'search_member'
   end
 
   private
