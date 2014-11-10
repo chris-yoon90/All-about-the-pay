@@ -83,12 +83,6 @@ class EmployeesController < ApplicationController
 			return temp_string
 		end
 
-		def only_site_admin_can_access
-			unless current_user.isAdmin?
-				redirect_to current_user
-			end
-		end
-
 		def only_site_admin_can_update_other_users
 			@employee = Employee.find(params[:id])
 			unless current_user.isAdmin?

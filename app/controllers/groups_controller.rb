@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
   before_action :non_logged_in_user_must_log_in
-  before_action :only_admin_user_can_access, except: [ :show ]
+  before_action :only_site_admin_can_access, except: [ :show ]
   before_action :only_admin_user_or_group_owner_can_access, only: [ :show ]
 
   def index
@@ -67,12 +67,6 @@ class GroupsController < ApplicationController
   	def group_params
   		params.require(:group).permit(:name)
   	end
-
-    def only_admin_user_can_access
-      unless current_user.isAdmin?
-        redirect_to current_user
-      end
-    end
 
     def only_admin_user_or_group_owner_can_access
       @group = Group.find(params[:id])

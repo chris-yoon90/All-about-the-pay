@@ -1,4 +1,7 @@
 class GroupOwnershipsController < ApplicationController
+	before_action :non_logged_in_user_must_log_in
+	before_action :only_site_admin_can_access
+
 	def create
 		@owner = Employee.find(params[:group_ownership][:employee_id])
 		@group = Group.find(params[:group_ownership][:group_id])

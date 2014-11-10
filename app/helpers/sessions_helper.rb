@@ -54,4 +54,10 @@ module SessionsHelper
       end
     end
 
+    def only_site_admin_can_access
+    	unless current_user.isAdmin?
+    		redirect_to current_user
+    	end
+    end
+
 end
