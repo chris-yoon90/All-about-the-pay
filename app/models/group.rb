@@ -9,19 +9,29 @@ class Group < ActiveRecord::Base
 	has_one :owner, through: :group_ownership, source: :employee
 
 	def accept_member!(employee)
-		self.group_memberships.create!(employee_id: employee.id)
+		begin
+			self.group_memberships.create!(employee_id: employee.id)
+		rescue ActiveRecord::RecordNotUnique
+		end
 	end
 
 	def reject_member!(employee)
-		self.group_memberships.find_by(employee_id: employee.id).destroy!
+		if membership = self.group_memberships.find_by(employee_id: employee.id)
+			membership.destroy!
+		end
 	end
 
 	def accept_owner!(owner)
-		self.create_group_ownership!(employee_id: owner.id)
+		begin
+			self.create_group_ownership!(employee_id: owner.id)
+		rescue ActiveRecord::RecordNotUnique
+		end
 	end
 
 	def reject_owner!
-		self.group_ownership.destroy!
+		if ownership = self.group_ownership
+			ownership.destroy!
+		end
 	end
 
 end

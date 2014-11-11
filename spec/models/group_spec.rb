@@ -52,6 +52,11 @@ RSpec.describe Group, :type => :model do
 		specify { expect(employee.member?(group)).to be_truthy }
 		its(:members) { should include(employee) }
 
+		describe "Then attempting to accept the same member again" do
+			it { expect(group.accept_member!(employee)).to be_nil }
+			it { expect(group.group_memberships.where(employee_id: employee.id).count).to eq 1 }
+		end
+
 		describe "Then rejecting a member" do
 			before { group.reject_member!(employee) }
 
@@ -66,6 +71,11 @@ RSpec.describe Group, :type => :model do
 
 		specify { expect(employee.owner?(group)).to be_truthy }
 		its(:owner) { should eq employee }
+
+		describe "Then attempting to overwrite the original owner" do
+			it { expect(group.accept_owner!(FactoryGirl.create(:employee))).to be_nil }
+			it { expect(group.reload.owner).to eq employee }
+		end
 
 		describe "Then rejecting the owner" do
 			before { group.reject_owner! }

@@ -3,9 +3,9 @@ class GroupOwnershipsController < ApplicationController
 	before_action :only_site_admin_can_access
 
 	def create
-		@owner = Employee.find(params[:group_ownership][:employee_id])
+		owner = Employee.find(params[:group_ownership][:employee_id])
 		@group = Group.find(params[:group_ownership][:group_id])
-		@group.accept_owner!(@owner)
+		@group.accept_owner!(owner)
 		redirect_to @group
 	end
 

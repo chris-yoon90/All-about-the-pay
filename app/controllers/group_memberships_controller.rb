@@ -3,9 +3,9 @@ class GroupMembershipsController < ApplicationController
   before_action :only_site_admin_can_access
 
   def create
-    @member = Employee.find(params[:group_membership][:employee_id])
+    member = Employee.find(params[:group_membership][:employee_id])
     @group = Group.find(params[:group_membership][:group_id])
-    @group.accept_member!(@member)
+    @group.accept_member!(member)
     redirect_to @group
   end
 
