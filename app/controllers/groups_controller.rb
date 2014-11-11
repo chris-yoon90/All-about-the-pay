@@ -59,7 +59,11 @@ class GroupsController < ApplicationController
 
   def search_member
     @group = Group.find(params[:id])
-    @employees = Employee.search(params[:search]).paginate(page: params[:page])
+    @employees = Employee.search(params[:search])
+          .joins('LEFT OUTER JOIN group_memberships ON group_memberships.employee_id = employees.id')
+          .where('group_memberships.group_id != ? OR group_memberships.group_id is NULL', @group.id)
+          .where.not(id: @group.members.pluck(:id))
+          .paginate(page: params[:page])
     render 'search_member'
   end
 

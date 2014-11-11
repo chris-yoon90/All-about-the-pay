@@ -246,12 +246,16 @@ RSpec.feature "GroupPages", :type => :feature do
 		it { should have_selector('input#search') }
 		it { should have_button("Search") }
 
-		it "Should have a list of all Employees" do
-			Employee.paginate(page: 1).each do |employee|
-				should have_selector('li.model-name', text: employee.name)
-				should have_selector('li.model-info', text: employee.position)
-				should have_selector("form#new_group_membership_#{employee.id}")
+		feature "Should list all non-members" do
+			before do
+				5.times { group.accept_member!(FactoryGirl.create(:employee)) }
+				visit search_member_group_path(group)
 			end
+
+			it { should have_selector('li.model-name', text: admin.name) }
+			it { should have_selector('li.model-info', text: admin.position) }
+			it { should have_selector("form#new_group_membership_#{admin.id}") }
+			it { should have_selector('li.list-item', count: 1) }
 		end
 
 		feature "Admin can search for employees" do

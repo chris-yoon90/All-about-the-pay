@@ -66,11 +66,11 @@ class Employee < ActiveRecord::Base
 	end
 
 	def member?(group)
-		self.group_memberships.find_by(group_id: group.id)
+		!self.group_memberships.find_by(group_id: group.id).nil?
 	end
 
 	def owner?(group)
-		self.group_ownerships.find_by(group_id: group.id)
+		!self.group_ownerships.find_by(group_id: group.id).nil?
 	end
 
 	def is_group_owner?
