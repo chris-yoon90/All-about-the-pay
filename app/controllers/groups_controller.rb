@@ -4,7 +4,7 @@ class GroupsController < ApplicationController
   before_action :only_admin_user_or_group_owner_can_access, only: [ :show ]
 
   def index
-  	@groups = Group.paginate(page: params[:page])
+  	@groups = Group.search(params[:search]).paginate(page: params[:page])
   end
 
   def show

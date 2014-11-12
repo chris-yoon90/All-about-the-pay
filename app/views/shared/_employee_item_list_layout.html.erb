@@ -11,9 +11,7 @@
 					<% if employee.groups.pluck(:name).any? %>
 					<li class="model-info hidden-xs"><strong>Membership:</strong> <%= employee.groups.pluck(:name).join(', ') %></li>
 					<% end %>
-					<li>
-						<%= yield %>
-					</li>
+					<%= yield %>
 				</ul>
 			</div>
 		</div>	

@@ -10,20 +10,23 @@
 		<%= link_to "Choose an owner", search_owner_group_path(@group), class: "btn btn-primary pull-right" %>
 	</div>
 	<% end %>
-	<div class="clearfix">
-		<% unless @group.members.any? %>
+
+	<% unless @group.members.any? %>
 		<h3>There are no members in this group. Please add members.</h3>
-		<% end %>
+	<% end %>
+
+	<% if current_user.isAdmin? %>
+	<div class="search-member-wrapper clearfix">
 		<%= link_to "Choose members", search_member_group_path(@group), class: "btn btn-primary pull-right" %>
 	</div>
+	<% end %>
+
 	<% if @group.members.any? %>
 	<div class="clearfix">
 		<%= will_paginate @members, class: "pull-right" %>
 	</div>
 	<ul class="model-list">
-	<% @members.each do |member| %>
-	<%= render 'member', member: member %>
-	<% end %>
+	<%= render partial: 'member_control', collection: @members, as: :employee, layout: 'shared/employee_item_list_layout' %>
 	</ul>
 	<div class="clearfix">
 		<%= will_paginate @members, class: "pull-right" %>

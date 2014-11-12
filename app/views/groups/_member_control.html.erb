@@ -1,0 +1,10 @@
+<% if current_user.isAdmin? %>
+<li>
+	<ul class="model-inner-control">
+		<li><%= link_to "edit", edit_employee_path(employee) %></li>
+		<li>
+			<%= link_to("remove from group", group_membership_path(@group.group_memberships.find_by(employee_id: employee.id)), method: :delete) %>
+		</li>
+	</ul>
+</li>
+<% end %>

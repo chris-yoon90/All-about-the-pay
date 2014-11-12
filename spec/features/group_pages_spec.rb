@@ -127,6 +127,7 @@ RSpec.feature "GroupPages", :type => :feature do
 
 		it { should have_content "Group Index" }
 		it { should have_title(full_title("Groups")) }
+		it { should have_selector('form.navbar-form.navbar-right') }
 		it "shows all groups" do
 			Group.paginate(page: 1).each do |group|
 				should have_link group.name, href: group_path(group)

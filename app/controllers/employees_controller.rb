@@ -6,7 +6,7 @@ class EmployeesController < ApplicationController
 	before_action :only_group_owner_can_access, only: [ :subordinates, :owned_groups ]
 
 	def index
-		@employees = Employee.paginate(page: params[:page])
+		@employees = Employee.search(params[:search]).paginate(page: params[:page])
 	end
 
 	def show
@@ -50,7 +50,7 @@ class EmployeesController < ApplicationController
 	end
 
 	def subordinates
-		@employees = @user.subordinates.paginate(page: params[:page])
+		@subordinates = @user.subordinates.paginate(page: params[:page])
 		render 'show_subordinates'
 	end
 

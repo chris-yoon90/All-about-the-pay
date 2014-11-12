@@ -16,6 +16,7 @@ RSpec.feature "EmployeePages", :type => :feature do
 			it { should have_title(full_title("Employees")) }
 			it { should have_link('Create New Employee', href: new_employee_path) }
 			it { should_not have_link('delete', href: employee_path(admin)) }
+			it { should have_selector('form.navbar-form.navbar-right') }
 			it "should list 10 users on the first page" do
 				Employee.paginate(page: 1).each do |item|
 					should have_link(item.name, href: employee_path(item)) 

@@ -6,9 +6,7 @@
 		<%= will_paginate @owned_groups, class: "pull-right" %>
 	</div>
 	<ul class="model-list">
-	<% @owned_groups.each do |group| %>
-		<%= render 'groups/group', group: group %>
-	<% end %>
+	<%= render partial: 'groups/group', collection: @owned_groups, as: :group %>
 	</ul>
 	<div class="clearfix">
 		<%= will_paginate @owned_groups, class: "pull-right" %>

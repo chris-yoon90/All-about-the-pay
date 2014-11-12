@@ -7,6 +7,17 @@ RSpec.describe Group, :type => :model do
 
 	it { should respond_to :name }
 
+	describe "search" do
+		let!(:group2) { FactoryGirl.create(:group, name: "Chris's group1") }
+		let!(:group3) { FactoryGirl.create(:group, name: "Chris's group2") }
+		let(:search_result) { Group.search("Chris's group") }
+
+		it { expect(search_result).to include group2 }
+		it { expect(search_result).to include group3 }
+		it { expect(search_result).to_not include group }
+
+	end
+
 	describe "Group membership association" do
 		let(:employee1) { FactoryGirl.create(:employee) }
 		let(:employee2) { FactoryGirl.create(:employee) }

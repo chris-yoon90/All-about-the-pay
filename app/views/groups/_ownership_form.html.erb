@@ -1,5 +1,7 @@
-<%= form_for(group.build_group_ownership(employee_id: employee.id), html: {id: "new_group_ownership_#{employee.id}"}) do |f| %>
-	<div><%= f.hidden_field :employee_id %></div>
-	<div><%= f.hidden_field :group_id %></div>
-	<%= f.submit "Choose as an owner", class: "btn btn-link" %>
-<% end %>
+<li>
+	<%= form_for(group.build_group_ownership(employee_id: employee.id), html: {id: "new_group_ownership_#{employee.id}"}) do |f| %>
+		<div><%= f.hidden_field :employee_id %></div>
+		<div><%= f.hidden_field :group_id %></div>
+		<%= f.submit "Choose as an owner", class: "btn btn-link" %>
+	<% end %>
+</li>

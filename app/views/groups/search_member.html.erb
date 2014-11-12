@@ -10,5 +10,5 @@
 <% end %>
 
 <%= render layout: 'search_layout', locals: { employees: @employees } do %>
-	<%= render partial: 'membership_form', collection: @employees, as: :employee, locals: { group: @group }, layout: 'employee_item_list_layout' %>
+	<%= render partial: 'membership_form', collection: @employees, as: :employee, locals: { group: @group }, layout: 'shared/employee_item_list_layout' %>
 <% end %>

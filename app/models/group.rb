@@ -8,6 +8,14 @@ class Group < ActiveRecord::Base
 	has_one :group_ownership, dependent: :destroy
 	has_one :owner, through: :group_ownership, source: :employee
 
+	def self.search(search)
+		if search
+			Group.where("name LIKE ?", "%#{search}%")
+		else
+			Group.all
+		end
+	end
+
 	def accept_member!(employee)
 		self.group_memberships.create!(employee_id: employee.id)
 	end
