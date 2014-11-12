@@ -7,6 +7,23 @@ RSpec.describe Group, :type => :model do
 
 	it { should respond_to :name }
 
+	describe "name validation" do
+		it "name cannot be blank" do
+			group.name = " ";
+			expect(group.valid?).to be_falsey
+		end
+
+		it "name cannot be less than 2 characters in length" do
+			group.name = "a"
+			expect(group.valid?).to be_falsey
+		end
+
+		it "name cannot be more than 50 characters in length" do
+			group.name = "a" * 51
+			expect(group.valid?).to be_falsey
+		end
+	end
+
 	describe "search" do
 		let!(:group2) { FactoryGirl.create(:group, name: "Chris's group1") }
 		let!(:group3) { FactoryGirl.create(:group, name: "Chris's group2") }
