@@ -17,14 +17,18 @@ Employee.create(name: "Admin",
 #create employees
 100.times do |i|
 	Employee.create(name: Faker::Name.name, 
-					email: "employee_#{i}@example.com", 
+					email: "employee_#{i+1}@example.com", 
 					position: Faker::Name.title, 
 					password: "T3st0rder!", 
 					password_confirmation: "T3st0rder!")
 end
 
-5.times do |i|
+15.times do |i|
 	Group.create(name: Faker::Company.name)
+end
+
+15.times do |i|
+	Activity.create(name: "Activity_#{i+1}")
 end
 
 employees = Employee.all

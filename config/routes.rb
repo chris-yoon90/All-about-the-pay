@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       get :search_member
     end
   end
+  resources :activities, only: [ :new, :create, :edit, :update, :destroy, :index]
   resources :sessions, only: [ :new, :create, :destroy ]
   resources :group_memberships, only: [ :create, :destroy ]
   resources :group_ownerships, only: [ :create, :destroy ]
