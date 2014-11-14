@@ -2,12 +2,14 @@
 
 <div class="col-xs-12 col-sm-12 col-md-8">
 	<h2>Employee Index</h2>
+	<div class="clearfix">
 	<%= form_tag employees_path, method: :get, class: "navbar-form navbar-right" do %>
 		<div class="form-group">
 			<%= text_field_tag :search, nil, class: "form-control", placeholder: "Search", role: "search" %>
 		</div>
 		<%= submit_tag "Search", name: nil, class: "btn btn-default" %>
 	<% end %>
+	</div>
 	<div class="clearfix">
 		<%= will_paginate @employees, class: "pull-right" %>
 	</div>

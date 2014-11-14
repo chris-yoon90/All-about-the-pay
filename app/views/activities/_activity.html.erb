@@ -1,0 +1,20 @@
+<li class="list-item"> 
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-5 col-sm-5 col-md-4">
+				<span class="model-name"><%= activity.name %></span>
+			</div>
+
+			<div class="col-xs-7 col-sm-7 col-md-8">
+				<ul class="model-control">
+					<li>
+						<ul class="model-inner-control">
+							<li><%= link_to "edit", edit_activity_path(activity) %></li>
+							<li><%= link_to("delete", activity_path(activity), method: :delete) %></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>	
+	</div>
+</li>

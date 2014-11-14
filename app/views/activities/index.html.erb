@@ -1,1 +1,22 @@
 <% provide(:title, "Activities") %>
+
+<div class="col-xs-12 col-sm-12 col-md-8">
+	<h2>Activity Index</h2>
+	<div class="clearfix">
+		<%= form_tag activities_path, method: :get, class: "navbar-form navbar-right" do %>
+			<div class="form-group">
+				<%= text_field_tag :search, nil, class: "form-control", placeholder: "Search", role: "search" %>
+			</div>
+			<%= submit_tag "Search", name: nil, class: "btn btn-default" %>
+		<% end %>
+	</div>
+	<div class="clearfix">
+		<%= will_paginate @activities, class: "pull-right" %>
+	</div>
+	<ul class="model-list">
+		<%= render @activities %>
+	</ul>
+	<div class="clearfix">
+		<%= will_paginate @activities, class: "pull-right" %>
+	</div>
+</div>

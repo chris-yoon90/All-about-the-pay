@@ -1,6 +1,7 @@
 class ActivitiesController < ApplicationController
 	
 	def index
+		@activities = Activity.search(params[:search]).paginate(page: params[:page])
 	end
 
 	def new
@@ -17,8 +18,11 @@ class ActivitiesController < ApplicationController
 		end
 	end
 
-	def delete
-
+	def destroy
+		activity = Activity.find(params[:id])
+  		deleted_activity = activity.destroy
+  		flash[:success] = "Activity '#{deleted_activity.name}' has been deleted."
+  		redirect_to activities_path
 	end
 
 	def edit
