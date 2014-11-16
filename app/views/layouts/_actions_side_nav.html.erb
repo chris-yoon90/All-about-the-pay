@@ -7,6 +7,8 @@
 		<li class="action-header">Groups</li>
 		<li><%= link_to "Group Index", groups_path %></li>
 		<li><%= link_to "Create New Group", new_group_path %></li>
+		<li class="action-header">Activities</li>
+		<li><%= link_to 'Activities Index', activities_path %></li>
 	</ul>
 <% elsif current_user.is_group_owner? %>
 	<ul class="actions-side-nav">

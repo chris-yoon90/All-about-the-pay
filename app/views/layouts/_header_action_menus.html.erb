@@ -11,6 +11,9 @@
         <li role="presentation" class="dropdown-header">Groups</li>
         <li><%= link_to 'Group Index', groups_path %></li>
         <li><%= link_to 'Create New Group', new_group_path %></li>
+        <li class="divider"></li>
+        <li role="presentation" class="dropdown-header">Activities</li>
+        <li><%= link_to 'Activities Index', activities_path %></li>
         <% elsif current_user.is_group_owner? %>
         <li><%= link_to 'Subordinates', subordinates_employee_path(current_user) %></li>
         <li class="divider"></li>

@@ -85,6 +85,7 @@ RSpec.feature "LoginPages", :type => :feature do
           it { should have_link 'Create New Employee', href: new_employee_path }
           it { should have_link 'Group Index', href: groups_path }
           it { should have_link 'Create New Group', href: new_group_path }
+          it { should have_link 'Activities Index', href: activities_path }
 
           feature "And log out right after" do
             before { click_link "Log out" }
