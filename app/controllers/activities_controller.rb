@@ -1,5 +1,7 @@
 class ActivitiesController < ApplicationController
-	
+	before_action :non_logged_in_user_must_log_in
+	before_action :only_site_admin_can_access
+
 	def index
 		@activities = Activity.search(params[:search]).paginate(page: params[:page])
 	end
